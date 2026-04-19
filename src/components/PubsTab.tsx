@@ -4,7 +4,7 @@ import AdBanner from "./AdBanner";
 
 // Crée ces unités dans AdSense → Ads → By ad unit → Display
 // puis remplace les slots ci-dessous
-const AD_SLOT_RECTANGLE = "REPLACE_WITH_ADSENSE_SLOT_ID";
+const AD_SLOT_RECTANGLE = "5076044960";
 
 interface PubsTabProps {
   onEarnLives: (amount: number) => void;
