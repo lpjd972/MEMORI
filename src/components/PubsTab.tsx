@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import AdBanner from "./AdBanner";
+
+// Crée ces unités dans AdSense → Ads → By ad unit → Display
+// puis remplace les slots ci-dessous
+const AD_SLOT_RECTANGLE = "REPLACE_WITH_ADSENSE_SLOT_ID";
 
 interface PubsTabProps {
   onEarnLives: (amount: number) => void;
@@ -86,12 +91,16 @@ const PubsTab = ({ onEarnLives, onEarnHint, onSkipLevel, onClose }: PubsTabProps
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="flex flex-col items-center gap-4 p-8 bg-card rounded-2xl border border-border shadow-lg"
+              className="flex flex-col items-center gap-4 w-full max-w-sm"
             >
-              <div className="text-4xl animate-pulse">📺</div>
-              <p className="font-bold text-foreground">Publicité en cours…</p>
-              <div className="text-3xl font-extrabold text-primary">{countdown}s</div>
-              <p className="text-sm text-muted-foreground">Merci de patienter</p>
+              <div className="w-full bg-card rounded-2xl border border-border shadow-lg overflow-hidden">
+                <AdBanner slot={AD_SLOT_RECTANGLE} format="rectangle" className="min-h-[250px]" />
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <p className="font-bold text-foreground">Publicité en cours…</p>
+                <div className="text-3xl font-extrabold text-primary">{countdown}s</div>
+                <p className="text-xs text-muted-foreground">Ta récompense arrive dans {countdown} seconde{countdown > 1 ? "s" : ""}</p>
+              </div>
             </motion.div>
           ) : (
             <motion.div
