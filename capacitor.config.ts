@@ -9,8 +9,7 @@ const config: CapacitorConfig = {
   },
   plugins: {
     AdMob: {
-      // Android App ID — à remplacer par le vrai ID AdMob
-      appId: "ca-app-pub-2237336875852898~XXXXXXXXXX",
+      appId: "ca-app-pub-4559651446193139~4104853429",
     },
   },
 };
