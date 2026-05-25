@@ -39,6 +39,12 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > android/memori.keystore
+          SIZE=$(wc -c < android/memori.keystore)
+          echo "Keystore décodé : $SIZE octets"
+          if [ "$SIZE" -lt 500 ]; then
+            echo "::error::Le keystore décodé est trop petit ($SIZE octets). Vérifie le secret KEYSTORE_BASE64."
+            exit 1
+          fi
           cat > android/keystore.properties <<EOF
           storeFile=memori.keystore
           storePassword=$KEYSTORE_PASSWORD
@@ -50,7 +56,7 @@ jobs:
         run: |
           cd android
           chmod +x ./gradlew
-          ./gradlew bundleRelease
+          ./gradlew bundleRelease --stacktrace
 
       - name: Nettoyer les fichiers sensibles
         if: always()
