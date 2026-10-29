@@ -45,9 +45,9 @@ const AuthScreen = ({ onSuccess }: AuthScreenProps) => {
         animate={{ scale: 1, rotate: [0, 5, -5, 0] }}
         transition={{ duration: 0.6 }}
       >
-        🧠
+        📖
       </motion.div>
-      <h1 className="text-3xl font-black text-foreground">Memori Ultime</h1>
+      <h1 className="text-3xl font-black text-foreground">Memory Bible</h1>
 
       <motion.form
         className="w-full max-w-sm bg-card rounded-2xl p-6 shadow-lg space-y-4"

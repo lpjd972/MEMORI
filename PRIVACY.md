@@ -1,9 +1,10 @@
-# Politique de confidentialité — Memori
+# Politique de confidentialité — Memory Bible
 
-_Dernière mise à jour : 25 mai 2026_
+_Dernière mise à jour : 29 octobre 2026_
 
-La présente politique de confidentialité décrit comment l'application mobile
-**Memori** (« l'Application ») collecte, utilise et protège vos informations.
+La présente politique de confidentialité décrit comment l'application
+**Memory Bible** (« l'Application ») collecte, utilise et protège vos informations.
+La version affichée dans l'application se trouve à l'adresse `/privacy`.
 
 ## 1. Informations que nous collectons
 
@@ -15,21 +16,26 @@ afficher le classement.
 **Données de jeu.** Nous enregistrons votre progression (niveaux atteints,
 scores) pour vous permettre de la retrouver et d'apparaître dans le classement.
 
-**Publicité.** L'Application affiche des publicités via Google AdMob. AdMob peut
-collecter et traiter votre identifiant publicitaire et des données techniques
-afin de diffuser des annonces. Consultez la politique de Google :
-https://policies.google.com/privacy
+**Aucune publicité.** L'Application n'affiche aucune publicité et n'utilise pas
+votre identifiant publicitaire.
+
+**Pause louange (YouTube).** Si vous choisissez de lancer une « pause louange »,
+un extrait de chant est lu depuis YouTube (mode « confidentialité renforcée »).
+YouTube, service de Google, peut alors traiter des données techniques (adresse IP,
+appareil). Politique de Google : https://policies.google.com/privacy
+
+**Sur l'appareil.** La tranche d'âge choisie est gardée sur votre appareil uniquement.
 
 ## 2. Utilisation des données
 
 Nous utilisons vos données uniquement pour : fournir et améliorer le jeu, gérer
-votre compte et le classement, afficher des publicités, et assurer la sécurité.
+votre compte et le classement, et assurer la sécurité.
 
 ## 3. Partage des données
 
-Nous ne vendons pas vos données. Elles sont traitées par nos prestataires
-techniques : Google AdMob (publicité) et Supabase (hébergement des comptes et
-données de jeu).
+Nous ne vendons pas vos données. Elles sont traitées par notre prestataire
+technique Supabase (hébergement des comptes et données de jeu) et, seulement
+pendant une pause louange, par YouTube.
 
 ## 4. Sécurité
 
@@ -44,8 +50,9 @@ suppression des données associées.
 
 ## 6. Enfants
 
-L'Application n'est pas destinée aux enfants de moins de 13 ans et ne collecte
-pas sciemment leurs données.
+Memory Bible peut être joué par des enfants **sans compte** : rien n'est alors
+envoyé sur internet, en dehors d'une pause louange choisie. La création d'un
+compte est réservée aux personnes de 15 ans et plus, ou se fait par un parent.
 
 ## 7. Contact
 

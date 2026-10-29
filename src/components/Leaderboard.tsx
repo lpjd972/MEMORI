@@ -2,16 +2,23 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useCloudSave } from "@/hooks/useCloudSave";
 
+interface LeaderboardEntry {
+  score: number;
+  level_reached: number;
+  created_at: string;
+  profiles: { display_name: string | null } | null;
+}
+
 interface LeaderboardProps {
   onClose: () => void;
 }
 
 const Leaderboard = ({ onClose }: LeaderboardProps) => {
   const { getLeaderboard } = useCloudSave(undefined);
-  const [entries, setEntries] = useState<any[]>([]);
+  const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
 
   useEffect(() => {
-    getLeaderboard().then(setEntries);
+    getLeaderboard().then((rows) => setEntries(rows as unknown as LeaderboardEntry[]));
   }, [getLeaderboard]);
 
   const medals = ["🥇", "🥈", "🥉"];
@@ -46,7 +53,7 @@ const Leaderboard = ({ onClose }: LeaderboardProps) => {
               </span>
               <div>
                 <p className="font-bold text-foreground text-sm">
-                  {(entry.profiles as any)?.display_name ?? "Joueur"}
+                  {entry.profiles?.display_name ?? "Joueur"}
                 </p>
                 <p className="text-xs text-muted-foreground">Niveau {entry.level_reached}</p>
               </div>

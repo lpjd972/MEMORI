@@ -16,7 +16,6 @@
     "cap:ios": "npm run build && npx cap sync ios && npx cap open ios"
   },
   "dependencies": {
-    "@capacitor-community/admob": "^8.0.0",
     "@capacitor/android": "^8.3.1",
     "@capacitor/cli": "^8.3.1",
     "@capacitor/core": "^8.3.1",

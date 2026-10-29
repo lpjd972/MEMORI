@@ -1,16 +1,16 @@
 import { useState, useCallback } from "react";
-import { getLevelConfig, QUIZ_QUESTIONS, shuffleArray } from "@/lib/gameData";
 
 export interface GameState {
   lives: number;
   currentLevel: number;
   score: number;
-  phase: "home" | "memory" | "enigma" | "quiz" | "levelComplete" | "gameOver";
+  phase: "home" | "memory" | "quiz" | "levelComplete" | "gameOver";
   levelsCompleted: number;
 }
 
-const INITIAL_LIVES = 100;
-const HINT_COST = 3;
+export const INITIAL_LIVES = 100;
+export const HINT_COST = 3;
+export const QUIZ_BONUS = 50;
 
 export function useGameState(initialState?: Partial<GameState>) {
   const [gameState, setGameState] = useState<GameState>({
@@ -22,15 +22,15 @@ export function useGameState(initialState?: Partial<GameState>) {
   });
 
   const startGame = useCallback(() => {
-    setGameState((prev) => ({ ...prev, phase: "memory" }));
+    setGameState((prev) => ({ ...prev, lives: prev.lives > 0 ? prev.lives : INITIAL_LIVES, phase: "memory" }));
   }, []);
 
-  /** Go back to home without resetting progress */
+  /** Back to the menu without losing progress (lives are refilled after a game over) */
   const goHome = useCallback(() => {
-    setGameState((prev) => ({ ...prev, phase: "home" }));
+    setGameState((prev) => ({ ...prev, lives: prev.lives > 0 ? prev.lives : INITIAL_LIVES, phase: "home" }));
   }, []);
 
-  /** Full reset to level 1 */
+  /** Full reset: back to Genesis */
   const restartGame = useCallback(() => {
     setGameState({
       lives: INITIAL_LIVES,
@@ -70,54 +70,18 @@ export function useGameState(initialState?: Partial<GameState>) {
     });
   }, []);
 
-  /** Spend HINT_COST points to get a hint. Returns true if affordable. */
-  const useHint = useCallback((): boolean => {
-    let success = false;
-    setGameState((prev) => {
-      if (prev.score >= HINT_COST) {
-        success = true;
-        return { ...prev, score: prev.score - HINT_COST };
-      }
-      return prev;
-    });
-    return success;
+  /** Spend points (e.g. a hint). The caller checks the score first. */
+  const spendScore = useCallback((amount: number) => {
+    setGameState((prev) => ({ ...prev, score: Math.max(0, prev.score - amount) }));
   }, []);
 
-  /** Add lives (e.g. from watching ads) */
+  /** Add lives (e.g. from the Bible challenge) */
   const addLives = useCallback((amount: number) => {
     setGameState((prev) => ({ ...prev, lives: prev.lives + amount }));
   }, []);
 
-  /** Add score points (e.g. from watching ads) */
-  const addScore = useCallback((amount: number) => {
-    setGameState((prev) => ({ ...prev, score: prev.score + amount }));
-  }, []);
-
-  /** Skip current level (advance without completing) */
-  const skipLevel = useCallback(() => {
-    setGameState((prev) => ({
-      ...prev,
-      currentLevel: prev.currentLevel + 1,
-      phase: "memory",
-    }));
-  }, []);
-
   const completeMemory = useCallback((bonusScore: number) => {
-    setGameState((prev) => {
-      const config = getLevelConfig(prev.currentLevel);
-      if (config.hasEnigma) {
-        return { ...prev, score: prev.score + bonusScore, phase: "enigma" };
-      }
-      return { ...prev, score: prev.score + bonusScore, phase: "quiz" };
-    });
-  }, []);
-
-  const completeEnigma = useCallback((bonusScore: number) => {
-    setGameState((prev) => ({
-      ...prev,
-      score: prev.score + bonusScore,
-      phase: "quiz",
-    }));
+    setGameState((prev) => ({ ...prev, score: prev.score + bonusScore, phase: "quiz" }));
   }, []);
 
   const completeQuiz = useCallback((correct: boolean) => {
@@ -129,7 +93,7 @@ export function useGameState(initialState?: Partial<GameState>) {
       }
       return {
         ...prev,
-        score: prev.score + 50,
+        score: prev.score + QUIZ_BONUS,
         phase: "levelComplete",
         levelsCompleted: prev.levelsCompleted + 1,
       };
@@ -144,11 +108,6 @@ export function useGameState(initialState?: Partial<GameState>) {
     }));
   }, []);
 
-  const getRandomQuestion = useCallback(() => {
-    const shuffled = shuffleArray(QUIZ_QUESTIONS);
-    return shuffled[0];
-  }, []);
-
   return {
     gameState,
     startGame,
@@ -157,14 +116,10 @@ export function useGameState(initialState?: Partial<GameState>) {
     continueAfterGameOver,
     loadSavedState,
     loseLives,
-    useHint,
+    spendScore,
     addLives,
-    addScore,
-    skipLevel,
     completeMemory,
-    completeEnigma,
     completeQuiz,
     nextLevel,
-    getRandomQuestion,
   };
 }
