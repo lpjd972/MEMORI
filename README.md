@@ -25,6 +25,7 @@ npm run dev        # lancer le jeu sur l'ordinateur (adresse affichée dans la f
 npm test           # vérifier le contenu biblique et les règles du jeu
 npm run lint       # contrôle du code
 npm run build      # construire le site (dossier dist/)
+npm run deploy     # publier le site sur Firebase Hosting (après « firebase login », voir PUBLISH.md)
 ```
 
 L'appli Android se construit depuis GitHub (onglet Actions, « Build Android AAB ») : voir `PUBLISH.md`.

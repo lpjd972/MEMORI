@@ -112,9 +112,26 @@ Puis refais les étapes 4 et 6 avec **le même keystore**.
 
 ---
 
+## Le site web : hébergé sur Firebase
+
+Depuis le 29/10/2026, le site de Memory Bible est hébergé sur **Firebase Hosting** (comme Vie de Louange
+et TMO Discipline), et plus sur Vercel. Réglages : `firebase.json` et `.firebaserc` (projet `memory-bible`).
+
+1. **Une seule fois** : créer le projet Firebase `memory-bible` sur https://console.firebase.google.com
+   (si ce nom est déjà pris, en choisir un autre et le recopier dans `.firebaserc`), puis dans un
+   terminal ouvert dans le dossier du projet : `firebase login` (JD se connecte lui-même).
+2. **Publier** : `npm run deploy` (construit le site puis l'envoie). Adresse : `https://memory-bible.web.app`
+   (ou `https://<nom du projet>.web.app`).
+3. **Connexion par compte** : dans Supabase (Authentication → URL Configuration), ajouter l'adresse
+   Firebase du site aux adresses de retour autorisées, sinon la connexion Google ramènerait vers l'ancienne adresse.
+4. **Vercel** : une fois le site Firebase en ligne, débrancher le projet `memori` dans Vercel
+   (Settings → Git → Disconnect), pour qu'il ne publie plus de copie à chaque envoi sur GitHub.
+
+L'appli Android ne dépend pas de l'hébergement : elle contient déjà le site.
+
 ## Alternative rapide : PWA / TWA
 
 Comme Memory Bible est déjà un site web, tu peux aussi le publier via
 [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) (TWA) si tu héberges
-le site (déjà sur Vercel d'après `vercel.json`). Mais le projet Capacitor actuel
+le site (sur Firebase Hosting, voir ci-dessus). Mais le projet Capacitor actuel
 est déjà prêt — suis ce guide.
