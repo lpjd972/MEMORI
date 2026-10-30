@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import QuizGate from "./QuizGate";
 import LouangePause from "./LouangePause";
 import { pickBonusQuestions, type ModeAge, type QuizQuestion } from "@/lib/gameData";
-import { LOUANGES } from "@/lib/louanges";
+import { LOUANGES, VIES_PAUSE_PSAUME } from "@/lib/louanges";
 
 interface BonusTabProps {
   level: number;
@@ -20,7 +20,7 @@ const BonusTab = ({ level, mode, onEarnLives, onClose }: BonusTabProps) => {
   const [defi, setDefi] = useState<QuizQuestion[] | null>(null);
   const [index, setIndex] = useState(0);
   const [goodAnswers, setGoodAnswers] = useState(0);
-  const [showLouange, setShowLouange] = useState(false);
+  const [louangeMode, setLouangeMode] = useState<"psaume" | "chant" | null>(null);
 
   const startDefi = () => {
     setDefi(pickBonusQuestions(level, mode, DEFI_QUESTIONS));
@@ -40,7 +40,16 @@ const BonusTab = ({ level, mode, onEarnLives, onClose }: BonusTabProps) => {
 
   return (
     <>
-      <AnimatePresence>{showLouange && <LouangePause key="louange" onClose={() => setShowLouange(false)} />}</AnimatePresence>
+      <AnimatePresence>
+        {louangeMode && (
+          <LouangePause
+            key="louange"
+            psaumeSeulement={louangeMode === "psaume"}
+            onEarnLives={louangeMode === "psaume" ? onEarnLives : undefined}
+            onClose={() => setLouangeMode(null)}
+          />
+        )}
+      </AnimatePresence>
 
       <motion.div className="min-h-screen flex flex-col bg-background" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <header className="flex items-center justify-between px-4 py-3 bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-10">
@@ -91,20 +100,36 @@ const BonusTab = ({ level, mode, onEarnLives, onClose }: BonusTabProps) => {
 
                 <motion.button
                   className="flex items-center gap-4 p-4 bg-card rounded-xl border border-border shadow-sm hover:border-primary/50 transition-colors text-left"
-                  onClick={() => setShowLouange(true)}
+                  onClick={() => setLouangeMode("psaume")}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="text-3xl">🎵</span>
+                  <span className="text-3xl">🙌</span>
                   <div className="flex-1">
-                    <p className="font-bold text-foreground">Pause louange (30 s)</p>
-                    <p className="text-xs text-muted-foreground">
-                      {LOUANGES.length > 0
-                        ? "Découvre un chant de louange d'une chaîne YouTube chrétienne."
-                        : "Un psaume à méditer pendant 30 secondes."}
-                    </p>
+                    <p className="font-bold text-foreground">Pause psaume (30 s)</p>
+                    <p className="text-xs text-muted-foreground">Un verset des Psaumes à méditer pendant 30 secondes.</p>
                   </div>
+                  <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg whitespace-nowrap">
+                    +{VIES_PAUSE_PSAUME} ❤️
+                  </span>
                 </motion.button>
+
+                {LOUANGES.length > 0 && (
+                  <motion.button
+                    className="flex items-center gap-4 p-4 bg-card rounded-xl border border-border shadow-sm hover:border-primary/50 transition-colors text-left"
+                    onClick={() => setLouangeMode("chant")}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <span className="text-3xl">🎵</span>
+                    <div className="flex-1">
+                      <p className="font-bold text-foreground">Pause louange (30 s)</p>
+                      <p className="text-xs text-muted-foreground">
+                        Découvre un chant de louange d'une chaîne YouTube chrétienne.
+                      </p>
+                    </div>
+                  </motion.button>
+                )}
               </div>
               <p className="text-[11px] text-muted-foreground text-center max-w-sm mt-2">
                 Aucune publicité dans Memory Bible. Les chants viennent de chaînes de louange, pour les faire connaître.

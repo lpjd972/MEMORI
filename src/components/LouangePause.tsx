@@ -1,10 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { DUREE_EXTRAIT, LOUANGES } from "@/lib/louanges";
+import { DUREE_EXTRAIT, LOUANGES, VIES_PAUSE_PSAUME } from "@/lib/louanges";
 import { shuffleArray } from "@/lib/gameData";
 
 interface LouangePauseProps {
   onClose: () => void;
+  /** Given lives after a full 30-second psalm meditation (never for a YouTube song) */
+  onEarnLives?: (amount: number) => void;
+  /** Force the psalm even when songs are configured */
+  psaumeSeulement?: boolean;
 }
 
 // Shown when no song is configured yet (or offline): a psalm to meditate on for 30 seconds
@@ -15,14 +19,26 @@ const PSAUMES = [
 ];
 
 /**
- * A free 30-second worship break: plays an excerpt of a worship song from YouTube, then stops it.
- * No reward is attached (YouTube forbids rewarding users for watching a video).
+ * A 30-second worship break. With a YouTube song: plays an excerpt then stops it, with no reward
+ * (YouTube forbids rewarding users for watching a video). With a psalm: lives are given at the end.
  */
-const LouangePause = ({ onClose }: LouangePauseProps) => {
-  const louange = useMemo(() => (LOUANGES.length > 0 ? shuffleArray(LOUANGES)[0] : null), []);
+const LouangePause = ({ onClose, onEarnLives, psaumeSeulement = false }: LouangePauseProps) => {
+  const louange = useMemo(
+    () => (!psaumeSeulement && LOUANGES.length > 0 ? shuffleArray(LOUANGES)[0] : null),
+    [psaumeSeulement]
+  );
   const psaume = useMemo(() => shuffleArray(PSAUMES)[0], []);
   const [countdown, setCountdown] = useState(DUREE_EXTRAIT);
   const finished = countdown === 0;
+  const rewarded = useRef(false);
+  const recompense = !louange && onEarnLives ? VIES_PAUSE_PSAUME : 0;
+
+  useEffect(() => {
+    if (finished && recompense > 0 && !rewarded.current) {
+      rewarded.current = true;
+      onEarnLives?.(recompense);
+    }
+  }, [finished, recompense, onEarnLives]);
 
   useEffect(() => {
     if (finished) return;
@@ -77,6 +93,7 @@ const LouangePause = ({ onClose }: LouangePauseProps) => {
         {finished ? (
           <div className="flex flex-col items-center gap-3">
             <p className="text-white/80 font-semibold">Merci pour ce moment de louange 🙏</p>
+            {recompense > 0 && <p className="text-2xl font-extrabold">+{recompense} ❤️</p>}
             {louange && (
               <a
                 href={watchUrl}
@@ -92,7 +109,9 @@ const LouangePause = ({ onClose }: LouangePauseProps) => {
             </button>
           </div>
         ) : (
-          <p className="text-sm text-white/60">Encore {countdown} s</p>
+          <p className="text-sm text-white/60">
+            Encore {countdown} s{recompense > 0 && ` · +${recompense} ❤️ à la fin`}
+          </p>
         )}
       </div>
     </motion.div>

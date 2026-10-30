@@ -2,8 +2,8 @@
 // Le but : faire découvrir des chaînes de louange. On ne gagne pas d'argent avec.
 //
 // ⚠ Règle de YouTube : il est interdit de donner une récompense (vies, points…) en échange du
-// visionnage d'une vidéo. La pause louange est donc libre et sans récompense ; les vies se gagnent
-// avec le « Défi de la Parole ». Voir docs/2026-10-29_CHECK-UP-et-REFONTE.md.
+// visionnage d'une vidéo. Le psaume médité 30 secondes rapporte des vies ; le chant YouTube, lui,
+// reste libre et sans récompense. Voir docs/2026-10-29_CHECK-UP-et-REFONTE.md.
 //
 // Pour ajouter un chant : ouvrir la vidéo sur YouTube, copier l'identifiant après « v= » dans
 // l'adresse (par exemple https://www.youtube.com/watch?v=XXXXXXXXXXX → "XXXXXXXXXXX"), puis ajouter
@@ -22,3 +22,6 @@ export const LOUANGES: Louange[] = [
 ];
 
 export const DUREE_EXTRAIT = 30;
+
+/** Vies gagnées après 30 secondes de méditation d'un psaume (pas pour un chant YouTube : règle de YouTube). */
+export const VIES_PAUSE_PSAUME = 9;

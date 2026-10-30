@@ -122,3 +122,6 @@ de YouTube : je le déconseille.
    dessus, inscription testée puis annulée. Corrigé au passage : le classement restait vide, faute de lien
    entre les scores et les profils. Restent pour JD : l'adresse du site et Google dans Supabase
    (`PUBLISH.md`, « Le site web », point 3), puis `git pull` et `npm run deploy` sur le PC fixe.
+8. **Pause psaume récompensée** (demande de JD du 30/10/2026 : « que la pause de 30 secondes rapporte des
+   vies ») : la « Pause psaume » (un verset des Psaumes, 30 s) donne +9 ❤️. La « Pause louange » avec un
+   chant YouTube apparaîtra à côté quand JD aura donné ses liens ; elle reste sans récompense (règle de YouTube).
