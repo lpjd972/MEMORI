@@ -115,3 +115,5 @@ de YouTube : je le déconseille.
 6. **Site sur Firebase** (décision de JD du 29/10/2026 : « utilise Firebase plutôt » que Vercel) :
    créer le projet Firebase `memory-bible-jd` (`memory-bible` était déjà pris), `firebase login`, puis `npm run deploy` ; ajouter la nouvelle
    adresse dans Supabase ; débrancher Vercel. Marche à suivre : `PUBLISH.md`, « Le site web ».
+   **Fait le 30/10/2026** : projet Firebase `memory-bible-jd` créé et site publié par JD depuis le PC fixe
+   (`C:\Users\jeand\Desktop\memory-bible`) : https://memory-bible-jd.web.app. Restent : Supabase et Vercel.
