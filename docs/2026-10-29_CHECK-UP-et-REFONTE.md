@@ -125,3 +125,7 @@ de YouTube : je le déconseille.
 8. **Pause psaume récompensée** (demande de JD du 30/10/2026 : « que la pause de 30 secondes rapporte des
    vies ») : la « Pause psaume » (un verset des Psaumes, 30 s) donne +9 ❤️. La « Pause louange » avec un
    chant YouTube apparaîtra à côté quand JD aura donné ses liens ; elle reste sans récompense (règle de YouTube).
+9. **Connexion Google en service** (30/10/2026) : client OAuth créé par JD dans le projet Google Cloud
+   `memory-bible-jd`, Google activé dans Supabase. Vérifié dans les journaux de Supabase : connexion Google
+   réussie depuis https://memory-bible-jd.web.app à 14h17 (heure du serveur), progression sauvegardée
+   (niveau 4). Le compte Google déjà présent depuis avril a reçu sa fiche joueur (créée à la main par SQL).
