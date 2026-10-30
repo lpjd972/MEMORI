@@ -113,5 +113,5 @@ de YouTube : je le déconseille.
 5. Relire quelques questions avec quelqu'un de son église : 220 questions ont été vérifiées avec leurs
    références, mais un deuxième regard est toujours utile.
 6. **Site sur Firebase** (décision de JD du 29/10/2026 : « utilise Firebase plutôt » que Vercel) :
-   créer le projet Firebase `memory-bible`, `firebase login`, puis `npm run deploy` ; ajouter la nouvelle
+   créer le projet Firebase `memory-bible-jd` (`memory-bible` était déjà pris), `firebase login`, puis `npm run deploy` ; ajouter la nouvelle
    adresse dans Supabase ; débrancher Vercel. Marche à suivre : `PUBLISH.md`, « Le site web ».
