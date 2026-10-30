@@ -129,3 +129,6 @@ de YouTube : je le déconseille.
    `memory-bible-jd`, Google activé dans Supabase. Vérifié dans les journaux de Supabase : connexion Google
    réussie depuis https://memory-bible-jd.web.app à 14h17 (heure du serveur), progression sauvegardée
    (niveau 4). Le compte Google déjà présent depuis avril a reçu sa fiche joueur (créée à la main par SQL).
+10. **Pause louange alimentée** (30/10/2026) : la première liste de JD (25 vidéos YouTube) est dans
+    `src/lib/louanges.ts`. Extrait de 30 s depuis le début de chaque vidéo, sans récompense ; le titre et
+    la chaîne s'affichent dans le lecteur YouTube. Proposée aussi tous les 3 niveaux réussis.

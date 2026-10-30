@@ -71,7 +71,7 @@ const LouangePause = ({ onClose, onEarnLives, psaumeSeulement = false }: Louange
           <iframe
             className="w-full max-w-xl aspect-video rounded-xl"
             src={embedUrl}
-            title={louange.titre}
+            title={louange.titre ?? "Chant de louange"}
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
           />
@@ -79,8 +79,8 @@ const LouangePause = ({ onClose, onEarnLives, psaumeSeulement = false }: Louange
 
         {louange ? (
           <div>
-            <p className="text-lg font-extrabold">{louange.titre}</p>
-            <p className="text-sm text-white/70">{louange.chaine}</p>
+            <p className="text-lg font-extrabold">{louange.titre ?? "🎵 Chant de louange"}</p>
+            {louange.chaine && <p className="text-sm text-white/70">{louange.chaine}</p>}
           </div>
         ) : (
           <div className="max-w-sm">

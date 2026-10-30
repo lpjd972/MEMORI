@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { HISTOIRES } from "@/lib/bible/histoires";
 import { QUESTIONS } from "@/lib/bible/questions";
+import { LOUANGES } from "@/lib/louanges";
 import {
   MODES_ORDER,
   createCards,
@@ -110,5 +111,13 @@ describe("moteur du jeu", () => {
     for (const q of qs) {
       expect(["🌍 La Création", "🌺 Adam et Ève"]).toContain(q.category);
     }
+  });
+});
+
+describe("pause louange", () => {
+  it("chaque chant a un identifiant YouTube valide (11 caractères) et n'apparaît qu'une fois", () => {
+    const ids = LOUANGES.map((l) => l.youtubeId);
+    for (const id of ids) expect(id, id).toMatch(/^[A-Za-z0-9_-]{11}$/);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 });

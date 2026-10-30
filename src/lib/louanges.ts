@@ -11,14 +11,40 @@
 // L'idéal est de prévenir la chaîne (ou de lui demander son accord) avant de l'ajouter.
 
 export interface Louange {
-  titre: string;
-  chaine: string;
+  /** Facultatif : sans titre, le lecteur YouTube affiche lui-même le titre et la chaîne */
+  titre?: string;
+  chaine?: string;
   youtubeId: string;
   debut?: number;
 }
 
+// Première liste de JD (30/10/2026), 25 chants.
 export const LOUANGES: Louange[] = [
-  // { titre: "Comment ne pas te louer", chaine: "Nom de la chaîne", youtubeId: "XXXXXXXXXXX", debut: 0 },
+  { youtubeId: "DxkfmLpuloI" },
+  { youtubeId: "LT3HwQAjgKs" },
+  { youtubeId: "JLT3VKp01Xc" },
+  { youtubeId: "_ozQfbgcbBg" },
+  { youtubeId: "JL9ikMmRNW8" },
+  { youtubeId: "KXbKHIpmhXY" },
+  { youtubeId: "i6YtHZEV0GU" },
+  { youtubeId: "kNTw0-jpUnQ" },
+  { youtubeId: "1ieckehNEO8" },
+  { youtubeId: "dn9pdpSvBm0" },
+  { youtubeId: "iRgevquZQfk" },
+  { youtubeId: "aEboHH22kSA" },
+  { youtubeId: "Xf8JMhOwE2A" },
+  { youtubeId: "2tAFUL0HfrQ" },
+  { youtubeId: "vKyurZv9vE8" },
+  { youtubeId: "SHI5fqr3tYg" },
+  { youtubeId: "Lo6EE-ymUUU" },
+  { youtubeId: "HX2LogUtToI" },
+  { youtubeId: "gYNCeKY5Pmw" },
+  { youtubeId: "KhQMHEUjFAA" },
+  { youtubeId: "pR2yEnMpYmE" },
+  { youtubeId: "fHsiA74lgyg" },
+  { youtubeId: "G01_AsaRIxo" },
+  { youtubeId: "1zh1wePLsHo" },
+  { youtubeId: "OjiWQVKX7WI" },
 ];
 
 export const DUREE_EXTRAIT = 30;
