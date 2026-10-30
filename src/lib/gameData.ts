@@ -133,14 +133,39 @@ export function pickQuestion(level: number, mode: ModeAge, exclude: string[] = [
   return toQuiz(shuffleArray(fresh.length > 0 ? fresh : pool)[0], mode);
 }
 
-/** Questions bonus (Défi de la Parole) : sur les histoires déjà rencontrées. */
-export function pickBonusQuestions(level: number, mode: ModeAge, count: number): QuizQuestion[] {
+/** Difficulty of the Bible challenge: rises with the number of challenges already passed. */
+export function niveauxDefi(mode: ModeAge, tour: number, palier: number): NiveauQuestion[] {
+  if (mode === "petits") return [1];
+  if (mode === "enfants") {
+    if (palier >= 10 || tour > 2) return [3];
+    if (palier >= 5 || tour > 1) return [2, 3];
+    if (palier >= 2) return [2];
+    return [1, 2];
+  }
+  return palier >= 2 || tour > 1 ? [3] : [2, 3];
+}
+
+/**
+ * Questions for the Bible challenge, on the stories already reached. Questions already seen in
+ * earlier challenges come last, so players keep meeting new ones.
+ */
+export function pickBonusQuestions(
+  level: number,
+  mode: ModeAge,
+  count: number,
+  palier = 0,
+  dejaVues: string[] = []
+): QuizQuestion[] {
   const { tour } = getLevelConfig(level, mode);
   const reached = tour > 1 ? HISTOIRES.length : ((level - 1) % HISTOIRES.length) + 1;
   const ids = HISTOIRES.slice(0, reached).map((h) => h.id);
-  const niveaux = niveauxFor(mode, tour);
-  const pool = QUESTIONS.filter((q) => ids.includes(q.histoire) && niveaux.includes(q.niveau));
-  return shuffleArray(pool).slice(0, count).map((q) => toQuiz(q, mode));
+  const niveaux = niveauxDefi(mode, tour, palier);
+  let pool = QUESTIONS.filter((q) => ids.includes(q.histoire) && niveaux.includes(q.niveau));
+  // Early on, few stories are unlocked: fall back to the easier level rather than ask nothing
+  if (pool.length < count) pool = QUESTIONS.filter((q) => ids.includes(q.histoire) && niveauxFor(mode, tour).includes(q.niveau));
+  const nouvelles = shuffleArray(pool.filter((q) => !dejaVues.includes(q.question)));
+  const anciennes = shuffleArray(pool.filter((q) => dejaVues.includes(q.question)));
+  return [...nouvelles, ...anciennes].slice(0, count).map((q) => toQuiz(q, mode));
 }
 
 export const STATS = { histoires: HISTOIRES.length, questions: QUESTIONS.length };

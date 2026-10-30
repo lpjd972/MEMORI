@@ -132,3 +132,11 @@ de YouTube : je le déconseille.
 10. **Pause louange alimentée** (30/10/2026) : la première liste de JD (25 vidéos YouTube) est dans
     `src/lib/louanges.ts`. Extrait de 30 s depuis le début de chaque vidéo, sans récompense ; le titre et
     la chaîne s'affichent dans le lecteur YouTube. Proposée aussi tous les 3 niveaux réussis.
+11. **Demandes de JD du 30/10/2026** :
+    - alerte quand il reste 20 cœurs ou moins (une fois, puis à nouveau seulement après être remonté au-dessus de 20),
+      avec un bouton vers le Bonus ;
+    - Défi de la Parole : +15 ❤️ par bonne réponse, +5 si 3/3, soit jusqu'à +50 ❤️ ; il devient plus difficile à
+      chaque défi réussi (2/3 ou mieux), et pose d'abord des questions jamais vues (suivi sur l'appareil) ;
+    - renvoi vers la Bible : après un défi, la liste des passages à relire ; dans une partie, après 2 mauvaises
+      réponses au même niveau, « Tu bloques ? Prends ta Bible et relis… » avec le passage de l'histoire.
+    - Pause psaume : +9 ❤️ (inchangé). Pause louange YouTube : toujours sans récompense (règle de YouTube).

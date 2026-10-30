@@ -92,7 +92,7 @@ const QuizGate = ({ question, onAnswer, score, onSpendHint, autoRead = false }: 
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            {isCorrect ? "✅ Bravo !" : "❌ Ce n'est pas ça… Une autre question arrive."}{" "}
+            {isCorrect ? "✅ Bravo !" : "❌ Ce n'est pas ça… La réponse est dans ta Bible."}{" "}
             <span className="text-muted-foreground font-semibold">📖 À lire : {question.reference}</span>
           </motion.p>
         )}

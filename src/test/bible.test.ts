@@ -6,6 +6,7 @@ import {
   MODES_ORDER,
   createCards,
   getLevelConfig,
+  niveauxDefi,
   pickBonusQuestions,
   pickQuestion,
 } from "@/lib/gameData";
@@ -110,6 +111,30 @@ describe("moteur du jeu", () => {
     expect(qs.length).toBeGreaterThan(0);
     for (const q of qs) {
       expect(["🌍 La Création", "🌺 Adam et Ève"]).toContain(q.category);
+    }
+  });
+});
+
+describe("Défi de la Parole", () => {
+  it("devient plus difficile au fil des défis réussis (sauf pour les petits)", () => {
+    expect(niveauxDefi("petits", 1, 50)).toEqual([1]);
+    expect(niveauxDefi("enfants", 1, 0)).toEqual([1, 2]);
+    expect(niveauxDefi("enfants", 1, 10)).toEqual([3]);
+    expect(niveauxDefi("grands", 1, 0)).toEqual([2, 3]);
+    expect(niveauxDefi("grands", 1, 2)).toEqual([3]);
+  });
+
+  it("donne d'abord des questions jamais vues", () => {
+    const premieres = pickBonusQuestions(31, "grands", 3, 5).map((q) => q.question);
+    for (let i = 0; i < 10; i++) {
+      const suivantes = pickBonusQuestions(31, "grands", 3, 5, premieres).map((q) => q.question);
+      for (const q of suivantes) expect(premieres).not.toContain(q);
+    }
+  });
+
+  it("propose toujours 3 questions, même au tout début du jeu", () => {
+    for (const mode of MODES_ORDER) {
+      expect(pickBonusQuestions(1, mode, 3, 20).length).toBeGreaterThanOrEqual(2);
     }
   });
 });

@@ -13,12 +13,16 @@ import LouangePause from "@/components/LouangePause";
 import { useGameState, HINT_COST } from "@/hooks/useGameState";
 import { useAuth } from "@/hooks/useAuth";
 import { useCloudSave } from "@/hooks/useCloudSave";
-import { MODES_ORDER, pickQuestion, type ModeAge, type QuizQuestion } from "@/lib/gameData";
+import { MODES_ORDER, getLevelConfig, pickQuestion, type ModeAge, type QuizQuestion } from "@/lib/gameData";
 import { LOUANGES } from "@/lib/louanges";
 
 const MODE_KEY = "memory-bible-mode";
 /** A worship break is offered every N completed levels (when songs are configured) */
 const LOUANGE_EVERY = 3;
+/** Below this many lives, the player is told once how to earn more in the Bonus tab */
+const LOW_LIVES = 20;
+/** After this many wrong answers on the same level, the player is sent back to the Bible passage */
+const STUCK_AFTER = 2;
 
 function readMode(): ModeAge {
   try {
@@ -60,6 +64,9 @@ const Index = () => {
   // Incremented for every new question so the quiz always remounts (even if the same text comes back)
   const [questionKey, setQuestionKey] = useState(0);
   const askedRef = useRef<string[]>([]);
+  const [wrongAnswers, setWrongAnswers] = useState(0);
+  const [lowLivesOpen, setLowLivesOpen] = useState(false);
+  const lowLivesShownRef = useRef(false);
 
   const changeMode = useCallback((m: ModeAge) => {
     setMode(m);
@@ -95,6 +102,16 @@ const Index = () => {
     }
   }, [user, phase, score, currentLevel, saveScore]);
 
+  // Tell the player once, when lives drop to LOW_LIVES, how to earn more; again only after refilling above it
+  useEffect(() => {
+    if (lives > LOW_LIVES) {
+      lowLivesShownRef.current = false;
+    } else if (lives > 0 && !lowLivesShownRef.current && (phase === "memory" || phase === "quiz")) {
+      lowLivesShownRef.current = true;
+      setLowLivesOpen(true);
+    }
+  }, [lives, phase]);
+
   const newQuestion = useCallback(
     (level: number) => {
       const q = pickQuestion(level, mode, askedRef.current);
@@ -108,6 +125,7 @@ const Index = () => {
   const handleMemoryComplete = useCallback(
     (bonus: number) => {
       askedRef.current = [];
+      setWrongAnswers(0);
       newQuestion(currentLevel);
       completeMemory(bonus);
     },
@@ -117,6 +135,7 @@ const Index = () => {
   const handleQuizAnswer = useCallback(
     (correct: boolean) => {
       completeQuiz(correct);
+      if (!correct) setWrongAnswers((n) => n + 1);
       if (!correct) newQuestion(currentLevel);
     },
     [completeQuiz, newQuestion, currentLevel]
@@ -172,6 +191,47 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <AnimatePresence>{showLouange && <LouangePause key="louange" onClose={() => setShowLouange(false)} />}</AnimatePresence>
 
+      <AnimatePresence>
+        {lowLivesOpen && (
+          <motion.div
+            key="low-lives"
+            className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 px-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-card rounded-2xl p-6 shadow-xl max-w-sm w-full text-center"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              role="dialog"
+              aria-label="Plus beaucoup de vies"
+            >
+              <div className="text-5xl mb-2">❤️</div>
+              <h2 className="text-xl font-extrabold text-foreground mb-2">Plus que {lives} cœurs !</h2>
+              <p className="text-sm text-muted-foreground mb-4">
+                Tu peux en gagner dans l'onglet <strong>🎁 Bonus</strong> : réussis le <strong>Défi de la Parole</strong>{" "}
+                (jusqu'à +50 ❤️) ou fais une <strong>pause psaume</strong> de 30 secondes (+9 ❤️).
+              </p>
+              <div className="flex flex-col gap-2">
+                <button
+                  className="game-gradient text-primary-foreground font-bold py-3 rounded-xl"
+                  onClick={() => {
+                    setLowLivesOpen(false);
+                    setShowBonus(true);
+                  }}
+                >
+                  🎁 Aller au Bonus
+                </button>
+                <button className="text-sm font-bold text-muted-foreground py-2" onClick={() => setLowLivesOpen(false)}>
+                  Plus tard
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <header className="flex items-center justify-between px-4 py-3 bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-10">
         <button onClick={goHome} className="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors">
           ← Menu
@@ -213,6 +273,15 @@ const Index = () => {
               <div className="text-center mb-4">
                 <span className="text-sm font-bold text-accent">🔓 Question pour débloquer le niveau suivant</span>
               </div>
+              {wrongAnswers >= STUCK_AFTER && (
+                <div className="max-w-md mx-auto px-4 mb-4">
+                  <div className="bg-accent/10 border border-accent/30 rounded-xl p-3 text-sm text-foreground">
+                    📖 <strong>Tu bloques ?</strong> Prends ta Bible et relis{" "}
+                    <strong>{getLevelConfig(currentLevel, mode).histoire.reference}</strong>. Toutes les réponses sont
+                    dedans !
+                  </div>
+                </div>
+              )}
               <QuizGate
                 question={currentQuestion}
                 onAnswer={handleQuizAnswer}
