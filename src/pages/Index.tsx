@@ -134,11 +134,11 @@ const Index = () => {
 
   const handleQuizAnswer = useCallback(
     (correct: boolean) => {
+      // A wrong answer costs a life; the same question stays until it is answered right
       completeQuiz(correct);
       if (!correct) setWrongAnswers((n) => n + 1);
-      if (!correct) newQuestion(currentLevel);
     },
-    [completeQuiz, newQuestion, currentLevel]
+    [completeQuiz]
   );
 
   const handleSpendHint = useCallback(() => spendScore(HINT_COST), [spendScore]);
@@ -288,6 +288,8 @@ const Index = () => {
                 score={score}
                 onSpendHint={handleSpendHint}
                 autoRead={mode === "petits"}
+                petits={mode === "petits"}
+                retryOnWrong
               />
             </motion.div>
           )}

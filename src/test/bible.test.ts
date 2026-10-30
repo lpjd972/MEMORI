@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { HISTOIRES } from "@/lib/bible/histoires";
 import { QUESTIONS } from "@/lib/bible/questions";
 import { LOUANGES } from "@/lib/louanges";
+import { passageAlire } from "@/lib/lienBible";
 import {
   MODES_ORDER,
   createCards,
@@ -35,6 +36,11 @@ describe("contenu biblique", () => {
         expect(n, `${h.id} niveau ${niveau}`).toBeGreaterThanOrEqual(2);
       }
     }
+  });
+
+  it("aucune question n'est posée deux fois", () => {
+    const textes = QUESTIONS.map((q) => q.question);
+    expect(new Set(textes).size).toBe(textes.length);
   });
 
   it("les questions sont bien formées", () => {
@@ -144,5 +150,20 @@ describe("pause louange", () => {
     const ids = LOUANGES.map((l) => l.youtubeId);
     for (const id of ids) expect(id, id).toMatch(/^[A-Za-z0-9_-]{11}$/);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+describe("liens vers la Bible", () => {
+  it("trouve le chapitre à relire", () => {
+    expect(passageAlire("Genèse 41:26")?.url).toBe("https://www.bible.com/bible/93/GEN.41.LSG");
+    expect(passageAlire("1 Samuel 17:4")?.chapitre).toBe("1 Samuel 17");
+    expect(passageAlire("Exode 7 – 12")?.url).toContain("EXO.7.");
+    expect(passageAlire("Psaume 23 (titre)")?.url).toContain("PSA.23.");
+    expect(passageAlire("Jean 3:16 ; 15:13")?.url).toContain("JHN.3.");
+  });
+
+  it("chaque question et chaque histoire renvoient vers un chapitre de la Bible", () => {
+    for (const q of QUESTIONS) expect(passageAlire(q.reference), q.reference).not.toBeNull();
+    for (const h of HISTOIRES) expect(passageAlire(h.reference), h.reference).not.toBeNull();
   });
 });

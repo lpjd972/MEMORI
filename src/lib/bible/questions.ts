@@ -14,7 +14,9 @@ export interface QuestionBible {
   reference: string;
 }
 
-type Ligne = [NiveauQuestion, string, string, string[], string];
+import { DETAILS } from "./questions-details";
+
+export type Ligne = [NiveauQuestion, string, string, string[], string];
 
 const PAR_HISTOIRE: Record<string, Ligne[]> = {
   creation: [
@@ -301,6 +303,8 @@ const PAR_HISTOIRE: Record<string, Ligne[]> = {
   ],
 };
 
-export const QUESTIONS: QuestionBible[] = Object.entries(PAR_HISTOIRE).flatMap(([histoire, lignes]) =>
-  lignes.map(([niveau, question, reponse, faux, reference]) => ({ histoire, niveau, question, reponse, faux, reference }))
+export const QUESTIONS: QuestionBible[] = [PAR_HISTOIRE, DETAILS].flatMap((serie) =>
+  Object.entries(serie).flatMap(([histoire, lignes]) =>
+    lignes.map(([niveau, question, reponse, faux, reference]) => ({ histoire, niveau, question, reponse, faux, reference }))
+  )
 );

@@ -90,7 +90,13 @@ const BonusTab = ({ level, mode, onEarnLives, onClose }: BonusTabProps) => {
               <p className="text-center text-sm font-bold text-accent mb-4">
                 📖 Défi de la Parole — question {index + 1}/{defi.length}
               </p>
-              <QuizGate key={index} question={defi[index]} onAnswer={handleAnswer} autoRead={mode === "petits"} />
+              <QuizGate
+                key={index}
+                question={defi[index]}
+                onAnswer={handleAnswer}
+                autoRead={mode === "petits"}
+                petits={mode === "petits"}
+              />
             </div>
           ) : (
             <>

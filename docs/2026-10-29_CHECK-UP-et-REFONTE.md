@@ -140,3 +140,14 @@ de YouTube : je le déconseille.
     - renvoi vers la Bible : après un défi, la liste des passages à relire ; dans une partie, après 2 mauvaises
       réponses au même niveau, « Tu bloques ? Prends ta Bible et relis… » avec le passage de l'histoire.
     - Pause psaume : +9 ❤️ (inchangé). Pause louange YouTube : toujours sans récompense (règle de YouTube).
+12. **Plus de questions, et la Bible en main** (demande de JD du 30/10/2026) :
+    - 333 questions de détail ajoutées (`src/lib/bible/questions-details.ts`) : **553 questions** en tout, chacune
+      avec son verset. Objectif de JD : environ 100 par histoire (3 100) ; à compléter par séries, en vérifiant
+      chaque réponse dans la Louis Segond 1910.
+    - Question pour passer au niveau : après une erreur, la **même question revient** (choix mélangés) et la bonne
+      réponse n'est **pas montrée** ; le jeu dit où la trouver (« relis tout le chapitre Genèse 41 »), avec un lien
+      « Lire Genèse 41 (Louis Segond) » vers bible.com et les liens de l'appli gratuite « Bible » (YouVersion)
+      pour Android et iPhone. Chaque erreur coûte toujours 1 cœur.
+    - Défi de la Parole : pas de réponse montrée non plus, même renvoi vers le chapitre, puis question suivante.
+    - Liens : de simples liens vers une appli gratuite d'un autre éditeur, sans partenariat. À vérifier par JD
+      sur son téléphone : qu'un lien « Lire … » ouvre bien la Louis Segond (version 93 de bible.com).

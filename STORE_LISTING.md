@@ -34,7 +34,7 @@ Chaque niveau raconte une histoire de la Bible : Noé et l'arche, Moïse et la m
 • Ados & adultes : des mots seulement, des plateaux plus grands et des questions plus pointues
 
 ✨ CE QUI T'ATTEND
-• 31 histoires dans l'ordre de la Bible, plus de 200 questions avec leur référence biblique
+• 31 histoires dans l'ordre de la Bible, plus de 550 questions avec leur référence biblique
 • Un verset de la Bible (Louis Segond 1910) à chaque niveau réussi
 • Le Défi de la Parole pour regagner des vies en répondant aux questions
 • Des pauses louange de 30 secondes pour découvrir des chaînes chrétiennes
