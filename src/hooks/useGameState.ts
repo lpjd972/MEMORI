@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import type { Progression } from "@/lib/progression";
 
 export interface GameState {
   lives: number;
@@ -50,14 +51,15 @@ export function useGameState(initialState?: Partial<GameState>) {
     }));
   }, []);
 
-  const loadSavedState = useCallback((saved: Partial<GameState>) => {
-    setGameState((prev) => ({
-      ...prev,
-      lives: saved.lives ?? prev.lives,
-      currentLevel: saved.currentLevel ?? prev.currentLevel,
-      score: saved.score ?? prev.score,
-      levelsCompleted: saved.levelsCompleted ?? prev.levelsCompleted,
-    }));
+  /** Switch to another player's progress (age category), or a fresh start when there is none */
+  const replaceProgress = useCallback((saved: Progression | null) => {
+    setGameState({
+      lives: saved && saved.lives > 0 ? saved.lives : INITIAL_LIVES,
+      currentLevel: saved?.currentLevel ?? 1,
+      score: saved?.score ?? 0,
+      phase: "home",
+      levelsCompleted: saved?.levelsCompleted ?? 0,
+    });
   }, []);
 
   const loseLives = useCallback((amount: number) => {
@@ -114,7 +116,7 @@ export function useGameState(initialState?: Partial<GameState>) {
     goHome,
     restartGame,
     continueAfterGameOver,
-    loadSavedState,
+    replaceProgress,
     loseLives,
     spendScore,
     addLives,

@@ -155,3 +155,8 @@ de YouTube : je le déconseille.
     https://vie-de-louange.web.app (bouton « Visiter le site Vie de Louange ») au lieu d'un chant ; après un chant, un
     lien « Découvre aussi notre site Vie de Louange » ; en bas de l'accueil, « Un projet Vie de Louange ». Courrier
     écrit au PC fixe (wiki, lettre 0054) pour ajouter Memory Bible à la page « Mes projets » (`/projets`) du site.
+14. **Une progression par catégorie** (demande de JD du 30/10/2026, compte familial) : sur un même compte (ou un
+    même appareil sans compte), Petits, Enfants et Ados & adultes ont chacun leur niveau, leurs vies, leur score,
+    leur classement et la difficulté de leur Défi de la Parole. Les boutons « Qui joue ? » affichent le niveau de
+    chacun (« Niveau 18 », « Nouveau »). Base : colonne `mode` dans `game_progress` (clé : joueur + catégorie) et
+    `game_scores`. La progression déjà faite sur le compte familial a été rangée dans « Petits » (niveau 18).

@@ -10,11 +10,12 @@ import GameOver from "@/components/GameOver";
 import Leaderboard from "@/components/Leaderboard";
 import BonusTab from "@/components/BonusTab";
 import LouangePause from "@/components/LouangePause";
-import { useGameState, HINT_COST } from "@/hooks/useGameState";
+import { useGameState, HINT_COST, INITIAL_LIVES } from "@/hooks/useGameState";
 import { useAuth } from "@/hooks/useAuth";
 import { useCloudSave } from "@/hooks/useCloudSave";
 import { MODES_ORDER, getLevelConfig, pickQuestion, type ModeAge, type QuizQuestion } from "@/lib/gameData";
 import { LOUANGES } from "@/lib/louanges";
+import { ecrireProgressionLocale, lireProgressionLocale, type Progression } from "@/lib/progression";
 
 const MODE_KEY = "memory-bible-mode";
 /** A worship break is offered every N completed levels (when songs are configured) */
@@ -47,7 +48,7 @@ const Index = () => {
     goHome,
     restartGame,
     continueAfterGameOver,
-    loadSavedState,
+    replaceProgress,
     loseLives,
     spendScore,
     addLives,
@@ -56,7 +57,11 @@ const Index = () => {
     nextLevel,
   } = useGameState();
 
-  const { saveProgress, loadProgress, saveScore } = useCloudSave(user?.id);
+  const { saveProgress, loadProgress, loadLevels, saveScore } = useCloudSave(user?.id);
+  // Level reached in each age category, shown on the "Qui joue ?" buttons
+  const [levels, setLevels] = useState<Partial<Record<ModeAge, number>>>({});
+  // Guards against a slow load overwriting a newer one (quick category changes)
+  const loadTokenRef = useRef(0);
 
   const { phase, lives, currentLevel, score } = gameState;
 
@@ -68,39 +73,78 @@ const Index = () => {
   const [lowLivesOpen, setLowLivesOpen] = useState(false);
   const lowLivesShownRef = useRef(false);
 
-  const changeMode = useCallback((m: ModeAge) => {
-    setMode(m);
-    try {
-      localStorage.setItem(MODE_KEY, m);
-    } catch {
-      // storage unavailable: the choice simply won't be remembered
-    }
-  }, []);
+  /** Each age category keeps its own progress: on the account when signed in, otherwise on this device */
+  const persist = useCallback(
+    (m: ModeAge, p: Progression) => {
+      if (user) saveProgress(p, m);
+      else ecrireProgressionLocale(m, p);
+    },
+    [user, saveProgress]
+  );
 
-  // Load saved progress when user logs in
-  useEffect(() => {
+  const refreshLevels = useCallback(async () => {
     if (user) {
-      loadProgress().then((saved) => {
-        if (saved && saved.levelsCompleted > 0) {
-          loadSavedState(saved);
-        }
-      });
+      setLevels(await loadLevels());
+    } else {
+      const local: Partial<Record<ModeAge, number>> = {};
+      for (const m of MODES_ORDER) {
+        const p = lireProgressionLocale(m);
+        if (p) local[m] = p.currentLevel;
+      }
+      setLevels(local);
     }
-  }, [user, loadProgress, loadSavedState]);
+  }, [user, loadLevels]);
 
-  // Auto-save progress on state changes
+  const loadCategory = useCallback(
+    async (m: ModeAge) => {
+      const token = ++loadTokenRef.current;
+      const saved = user ? await loadProgress(m) : lireProgressionLocale(m);
+      if (token !== loadTokenRef.current) return;
+      replaceProgress(saved);
+      refreshLevels();
+    },
+    [user, loadProgress, replaceProgress, refreshLevels]
+  );
+
+  const changeMode = useCallback(
+    (m: ModeAge) => {
+      if (m === mode) return;
+      setMode(m);
+      try {
+        localStorage.setItem(MODE_KEY, m);
+      } catch {
+        // storage unavailable: the choice simply won't be remembered
+      }
+      loadCategory(m);
+    },
+    [mode, loadCategory]
+  );
+
+  // Load the current category's progress at start-up and whenever the player signs in or out
   useEffect(() => {
-    if (user && phase !== "home" && phase !== "gameOver") {
-      saveProgress(gameState);
+    if (!authLoading) loadCategory(mode);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, user?.id]);
+
+  // Auto-save progress while playing (never on the home screen, where the category can change)
+  useEffect(() => {
+    if (phase !== "home" && phase !== "gameOver") {
+      persist(mode, gameState);
     }
-  }, [user, gameState, phase, saveProgress]);
+  }, [gameState, phase, mode, persist]);
+
+  const handleRestart = useCallback(() => {
+    restartGame();
+    persist(mode, { lives: INITIAL_LIVES, currentLevel: 1, score: 0, levelsCompleted: 0 });
+    setLevels((l) => ({ ...l, [mode]: 1 }));
+  }, [restartGame, persist, mode]);
 
   // Save score on game over
   useEffect(() => {
     if (user && phase === "gameOver") {
-      saveScore(score, currentLevel);
+      saveScore(score, currentLevel, mode);
     }
-  }, [user, phase, score, currentLevel, saveScore]);
+  }, [user, phase, score, currentLevel, mode, saveScore]);
 
   // Tell the player once, when lives drop to LOW_LIVES, how to earn more; again only after refilling above it
   useEffect(() => {
@@ -158,7 +202,7 @@ const Index = () => {
   }
 
   if (showLeaderboard) {
-    return <Leaderboard onClose={() => setShowLeaderboard(false)} />;
+    return <Leaderboard mode={mode} onClose={() => setShowLeaderboard(false)} />;
   }
 
   if (showBonus) {
@@ -174,7 +218,8 @@ const Index = () => {
         mode={mode}
         onModeChange={changeMode}
         currentLevel={currentLevel}
-        onRestart={restartGame}
+        levels={levels}
+        onRestart={handleRestart}
         onBonus={() => setShowBonus(true)}
         user={user}
         profile={profile}

@@ -27,12 +27,12 @@ const BonusTab = ({ level, mode, onEarnLives, onClose }: BonusTabProps) => {
   const [index, setIndex] = useState(0);
   const [goodAnswers, setGoodAnswers] = useState(0);
   const [aRelire, setARelire] = useState<string[]>([]);
-  const [palier, setPalier] = useState(lirePalier);
+  const [palier, setPalier] = useState(() => lirePalier(mode));
   const [louangeMode, setLouangeMode] = useState<"psaume" | "chant" | null>(null);
 
   const startDefi = () => {
-    const questions = pickBonusQuestions(level, mode, DEFI_QUESTIONS, lirePalier(), lireQuestionsVues());
-    noterQuestionsVues(questions.map((q) => q.question));
+    const questions = pickBonusQuestions(level, mode, DEFI_QUESTIONS, lirePalier(mode), lireQuestionsVues(mode));
+    noterQuestionsVues(mode, questions.map((q) => q.question));
     setDefi(questions);
     setIndex(0);
     setGoodAnswers(0);
@@ -51,8 +51,8 @@ const BonusTab = ({ level, mode, onEarnLives, onClose }: BonusTabProps) => {
     if (index + 1 === defi!.length) {
       if (good === defi!.length) onEarnLives(PERFECT_BONUS);
       if (good >= DEFI_REUSSI) {
-        monterPalier();
-        setPalier(lirePalier());
+        monterPalier(mode);
+        setPalier(lirePalier(mode));
       }
     }
     setIndex((i) => i + 1);

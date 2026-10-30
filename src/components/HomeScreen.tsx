@@ -8,6 +8,8 @@ interface HomeScreenProps {
   mode: ModeAge;
   onModeChange: (mode: ModeAge) => void;
   currentLevel: number;
+  /** Level reached in each age category (each family member has their own progress) */
+  levels: Partial<Record<ModeAge, number>>;
   onRestart: () => void;
   onBonus: () => void;
   user?: User | null;
@@ -22,6 +24,7 @@ const HomeScreen = ({
   mode,
   onModeChange,
   currentLevel,
+  levels,
   onRestart,
   onBonus,
   user,
@@ -85,6 +88,11 @@ const HomeScreen = ({
               <span className="text-2xl">{MODES[m].emoji}</span>
               <span className="text-xs font-extrabold text-foreground leading-tight text-center">{MODES[m].label}</span>
               <span className="text-[10px] font-semibold text-muted-foreground">{MODES[m].ages}</span>
+              <span className="text-[10px] font-bold text-primary">
+                {(m === mode ? currentLevel : levels[m] ?? 1) > 1
+                  ? `Niveau ${m === mode ? currentLevel : levels[m]}`
+                  : "Nouveau"}
+              </span>
             </button>
           ))}
         </div>
@@ -138,7 +146,7 @@ const HomeScreen = ({
         <div className="flex items-center gap-4 mt-1">
           {currentLevel > 1 && (
             <button onClick={onRestart} className="text-xs text-muted-foreground font-semibold underline">
-              Recommencer depuis la Genèse
+              Recommencer « {MODES[mode].label} » depuis la Genèse
             </button>
           )}
           {user && onSignOut && (
