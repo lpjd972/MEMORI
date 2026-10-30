@@ -49,5 +49,25 @@ export const LOUANGES: Louange[] = [
 
 export const DUREE_EXTRAIT = 30;
 
+/** Le site de JD, présenté une pause louange sur deux (demande de JD du 30/10/2026) */
+export const VIE_DE_LOUANGE = {
+  nom: "Vie de Louange",
+  url: "https://vie-de-louange.web.app",
+  accroche: "Un site pour rendre gloire à Dieu : louange, témoignage et partage.",
+};
+
+const CLE_COMPTEUR = "memory-bible-pauses-louange";
+
+/** Une pause louange sur deux présente le site Vie de Louange au lieu d'un chant YouTube. */
+export function prochainePauseEstVieDeLouange(): boolean {
+  try {
+    const n = Number(localStorage.getItem(CLE_COMPTEUR) ?? "0") + 1;
+    localStorage.setItem(CLE_COMPTEUR, String(n));
+    return n % 2 === 0;
+  } catch {
+    return Math.random() < 0.5;
+  }
+}
+
 /** Vies gagnées après 30 secondes de méditation d'un psaume (pas pour un chant YouTube : règle de YouTube). */
 export const VIES_PAUSE_PSAUME = 9;

@@ -151,3 +151,7 @@ de YouTube : je le déconseille.
     - Défi de la Parole : pas de réponse montrée non plus, même renvoi vers le chapitre, puis question suivante.
     - Liens : de simples liens vers une appli gratuite d'un autre éditeur, sans partenariat. À vérifier par JD
       sur son téléphone : qu'un lien « Lire … » ouvre bien la Louis Segond (version 93 de bible.com).
+13. **Vie de Louange dans le jeu** (demande de JD du 30/10/2026) : une « Pause louange » sur deux présente le site
+    https://vie-de-louange.web.app (bouton « Visiter le site Vie de Louange ») au lieu d'un chant ; après un chant, un
+    lien « Découvre aussi notre site Vie de Louange » ; en bas de l'accueil, « Un projet Vie de Louange ». Courrier
+    écrit au PC fixe (wiki, lettre 0054) pour ajouter Memory Bible à la page « Mes projets » (`/projets`) du site.

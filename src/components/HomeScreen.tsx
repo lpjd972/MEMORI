@@ -160,7 +160,11 @@ const HomeScreen = ({
         <span>❓ {STATS.questions} questions</span>
       </motion.div>
       <p className="text-[11px] text-muted-foreground text-center max-w-xs -mt-3">
-        Versets cités : Bible Louis Segond 1910 ·{" "}
+        Un projet{" "}
+        <a href="https://vie-de-louange.web.app" target="_blank" rel="noreferrer" className="underline">
+          Vie de Louange
+        </a>{" "}
+        · Versets cités : Bible Louis Segond 1910 ·{" "}
         <a href="/privacy" className="underline">
           Confidentialité
         </a>

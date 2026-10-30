@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { DUREE_EXTRAIT, LOUANGES, VIES_PAUSE_PSAUME } from "@/lib/louanges";
+import {
+  DUREE_EXTRAIT,
+  LOUANGES,
+  VIE_DE_LOUANGE,
+  VIES_PAUSE_PSAUME,
+  prochainePauseEstVieDeLouange,
+} from "@/lib/louanges";
 import { shuffleArray } from "@/lib/gameData";
 
 interface LouangePauseProps {
@@ -28,6 +34,8 @@ const LouangePause = ({ onClose, onEarnLives, psaumeSeulement = false }: Louange
     [psaumeSeulement]
   );
   const psaume = useMemo(() => shuffleArray(PSAUMES)[0], []);
+  // Every other song break presents the Vie de Louange website instead of a YouTube song
+  const vitrine = useMemo(() => louange !== null && prochainePauseEstVieDeLouange(), [louange]);
   const [countdown, setCountdown] = useState(DUREE_EXTRAIT);
   const finished = countdown === 0;
   const rewarded = useRef(false);
@@ -67,7 +75,26 @@ const LouangePause = ({ onClose, onEarnLives, psaumeSeulement = false }: Louange
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center gap-5 px-4 text-center">
-        {louange && !finished && (
+        {vitrine && (
+          <div className="max-w-sm flex flex-col items-center gap-4">
+            <div className="text-6xl">🎶</div>
+            <p className="text-2xl font-extrabold">{VIE_DE_LOUANGE.nom}</p>
+            <p className="text-white/80">{VIE_DE_LOUANGE.accroche}</p>
+            <a
+              href={VIE_DE_LOUANGE.url}
+              target="_blank"
+              rel="noreferrer"
+              className="bg-amber-500 hover:bg-amber-600 text-black font-extrabold px-6 py-3 rounded-xl"
+            >
+              Visiter le site Vie de Louange
+            </a>
+            <button onClick={onClose} className="text-sm font-bold text-white/80 underline">
+              Revenir au jeu
+            </button>
+          </div>
+        )}
+
+        {louange && !vitrine && !finished && (
           <iframe
             className="w-full max-w-xl aspect-video rounded-xl"
             src={embedUrl}
@@ -77,7 +104,7 @@ const LouangePause = ({ onClose, onEarnLives, psaumeSeulement = false }: Louange
           />
         )}
 
-        {louange ? (
+        {vitrine ? null : louange ? (
           <div>
             <p className="text-lg font-extrabold">{louange.titre ?? "🎵 Chant de louange"}</p>
             {louange.chaine && <p className="text-sm text-white/70">{louange.chaine}</p>}
@@ -90,7 +117,7 @@ const LouangePause = ({ onClose, onEarnLives, psaumeSeulement = false }: Louange
           </div>
         )}
 
-        {finished ? (
+        {vitrine ? null : finished ? (
           <div className="flex flex-col items-center gap-3">
             <p className="text-white/80 font-semibold">Merci pour ce moment de louange 🙏</p>
             {recompense > 0 && <p className="text-2xl font-extrabold">+{recompense} ❤️</p>}
@@ -102,6 +129,11 @@ const LouangePause = ({ onClose, onEarnLives, psaumeSeulement = false }: Louange
                 className="bg-red-600 hover:bg-red-700 text-white font-bold px-5 py-2 rounded-xl"
               >
                 ▶ Écouter le chant en entier sur YouTube
+              </a>
+            )}
+            {louange && (
+              <a href={VIE_DE_LOUANGE.url} target="_blank" rel="noreferrer" className="text-sm text-amber-300 underline">
+                🎶 Découvre aussi notre site {VIE_DE_LOUANGE.nom}
               </a>
             )}
             <button onClick={onClose} className="text-sm font-bold text-white/80 underline">
