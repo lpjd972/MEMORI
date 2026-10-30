@@ -117,3 +117,8 @@ de YouTube : je le déconseille.
    adresse dans Supabase ; débrancher Vercel. Marche à suivre : `PUBLISH.md`, « Le site web ».
    **Fait le 30/10/2026** : projet Firebase `memory-bible-jd` créé et site publié par JD depuis le PC fixe
    (`C:\Users\jeand\Desktop\memory-bible`) : https://memory-bible-jd.web.app. Restent : Supabase et Vercel.
+7. **Comptes dans le Supabase de JD** (accord de JD du 30/10/2026, « les anciens joueurs recréeront leur
+   compte ») : tables recréées dans le projet `jnfetpxchbnqejizjvef` (organisation « memori »), jeu branché
+   dessus, inscription testée puis annulée. Corrigé au passage : le classement restait vide, faute de lien
+   entre les scores et les profils. Restent pour JD : l'adresse du site et Google dans Supabase
+   (`PUBLISH.md`, « Le site web », point 3), puis `git pull` et `npm run deploy` sur le PC fixe.

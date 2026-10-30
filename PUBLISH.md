@@ -121,8 +121,15 @@ et TMO Discipline), et plus sur Vercel. Réglages : `firebase.json` et `.firebas
    avec `firebase projects:create memory-bible-jd --display-name "Memory Bible"`, puis dans un
    terminal ouvert dans le dossier du projet : `firebase login` (JD se connecte lui-même).
 2. **Publier** : `npm run deploy` (construit le site puis l'envoie). Adresse : `https://memory-bible-jd.web.app`.
-3. **Connexion par compte** : dans Supabase (Authentication → URL Configuration), ajouter l'adresse
-   Firebase du site aux adresses de retour autorisées, sinon la connexion Google ramènerait vers l'ancienne adresse.
+3. **Comptes, sauvegardes et classement** : depuis le 30/10/2026, dans le Supabase de JD (organisation
+   « memori », projet `jnfetpxchbnqejizjvef`), et plus dans celui de Lovable. Deux réglages à faire une fois
+   par JD dans https://supabase.com/dashboard/project/jnfetpxchbnqejizjvef :
+   - Authentication → URL Configuration : « Site URL » = `https://memory-bible-jd.web.app`, et ajouter la
+     même adresse dans « Redirect URLs » (sinon les liens de confirmation par e-mail renvoient ailleurs) ;
+   - Authentication → Sign In / Providers → Google : l'activer avec un identifiant Google (Google Cloud
+     Console → Identifiants → ID client OAuth « Application Web », adresse de retour
+     `https://jnfetpxchbnqejizjvef.supabase.co/auth/v1/callback`). Tant que ce n'est pas fait, le bouton
+     « Google » affiche une erreur ; la connexion par e-mail marche.
 4. **Vercel** : une fois le site Firebase en ligne, débrancher le projet `memori` dans Vercel
    (Settings → Git → Disconnect), pour qu'il ne publie plus de copie à chaque envoi sur GitHub.
 
