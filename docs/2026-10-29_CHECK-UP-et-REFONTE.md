@@ -190,3 +190,9 @@ de YouTube : je le déconseille.
       labyrinthe pour les petits) ; les étoiles se gagnent en réussissant des niveaux et ne s'achètent jamais.
       Le badge « Premium » hérité de l'ancien jeu a été retiré de l'accueil (la colonne `is_premium` reste en base,
       sans usage).
+17. **Les petits (3-6 ans) restent sur le Memory** (décision de JD du 01/11/2026 : ils ne savent pas encore lire) :
+    Mots mêlés et Versets à trous sont grisés pour les Petits (« dès 7 ans ») et ne s'ouvrent pas pour eux, même par
+    erreur. Après certains niveaux du Memory, les Petits se voient proposer le labyrinthe « Rejoins Jésus » au lieu
+    d'une pause louange YouTube (oubli corrigé : il restait là un chant YouTube). Pour eux, le Bonus = Défi de la
+    Parole (questions simples, avec un parent), pause psaume, labyrinthe, lien « La Bible App pour les enfants »,
+    Vie de Louange. Toujours le principe : les petits jouent avec un parent.

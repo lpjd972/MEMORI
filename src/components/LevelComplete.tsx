@@ -8,9 +8,11 @@ interface LevelCompleteProps {
   onNext: () => void;
   /** Offer a 30-second worship break (only when songs are configured) */
   onLouange?: () => void;
+  /** Text of the break button (the little ones get the maze instead of a worship video) */
+  louangeLabel?: string;
 }
 
-const LevelComplete = ({ level, mode, score, onNext, onLouange }: LevelCompleteProps) => {
+const LevelComplete = ({ level, mode, score, onNext, onLouange, louangeLabel }: LevelCompleteProps) => {
   const { histoire } = getLevelConfig(level, mode);
 
   return (
@@ -54,7 +56,7 @@ const LevelComplete = ({ level, mode, score, onNext, onLouange }: LevelCompleteP
       </motion.button>
       {onLouange && (
         <button onClick={onLouange} className="text-sm font-bold text-accent">
-          🎵 Une pause louange de 30 secondes ?
+          {louangeLabel ?? "🎵 Une pause louange de 30 secondes ?"}
         </button>
       )}
     </motion.div>

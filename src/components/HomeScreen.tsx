@@ -45,11 +45,12 @@ const HomeScreen = ({
   onLeaderboard,
 }: HomeScreenProps) => {
   const current = getLevelConfig(currentLevel, mode);
+  /** Mots mêlés and Versets à trous need reading: the little ones (3-6) only play Memory */
+  const petits = mode === "petits";
   const [guideAuto, setGuideAuto] = useState(() => !premiereVisite() && lireGuideAuto());
   const [etapesGuide, setEtapesGuide] = useState<EtapeGuide[] | null>(null);
 
   const ouvrirGuide = useCallback(() => {
-    const petits = mode === "petits";
     const etapes: EtapeGuide[] = [
       {
         titre: "👋 Bienvenue dans Memory Bible !",
@@ -71,14 +72,15 @@ const HomeScreen = ({
       {
         cible: "mots-meles",
         titre: "🔤 Jeu 2 : les mots mêlés",
-        texte:
-          "Lis l'histoire, puis retrouve ses mots dans la grille : touche la première lettre, puis la dernière. Attention aux mots pièges venus d'autres histoires !",
+        texte: `Lis l'histoire, puis retrouve ses mots dans la grille : touche la première lettre, puis la dernière. Attention aux mots pièges venus d'autres histoires !${
+          petits ? " Ce jeu est pour ceux qui savent lire (dès 7 ans) : les petits jouent au Memory." : ""
+        }`,
       },
       {
         cible: "versets",
         titre: "✍️ Jeu 3 : les versets à trous",
         texte: `Complète les grands versets de la Bible avec les bons mots. Une erreur ? Ouvre ta Bible au bon passage.${
-          petits ? " Ce jeu est pour les plus grands (dès 7 ans)." : ""
+          petits ? " Ce jeu aussi est pour ceux qui savent lire (dès 7 ans)." : ""
         }`,
       },
       {
@@ -115,7 +117,7 @@ const HomeScreen = ({
     ];
     // skip the steps whose button is not on screen (already installed, no leaderboard…)
     setEtapesGuide(etapes.filter((e) => !e.cible || document.querySelector(`[data-tuto="${e.cible}"]`)));
-  }, [mode, user]);
+  }, [petits, user]);
 
   useEffect(() => {
     if (guideDejaOuvert || !(premiereVisite() || lireGuideAuto())) return;
@@ -221,21 +223,23 @@ const HomeScreen = ({
         <div className="grid grid-cols-2 gap-2 w-full">
           <motion.button
             data-tuto="mots-meles"
-            className="bg-card text-foreground font-bold py-3 rounded-xl shadow-sm border border-border"
+            className="bg-card text-foreground font-bold py-3 rounded-xl shadow-sm border border-border disabled:opacity-40"
             onClick={() => onJeu("mots-meles")}
+            disabled={petits}
             whileTap={{ scale: 0.97 }}
           >
             🔤 Mots mêlés
+            {petits && <span className="block text-[10px] font-semibold">dès 7 ans</span>}
           </motion.button>
           <motion.button
             data-tuto="versets"
             className="bg-card text-foreground font-bold py-3 rounded-xl shadow-sm border border-border disabled:opacity-40"
             onClick={() => onJeu("versets")}
-            disabled={mode === "petits"}
+            disabled={petits}
             whileTap={{ scale: 0.97 }}
           >
             ✍️ Versets à trous
-            {mode === "petits" && <span className="block text-[10px] font-semibold">dès 7 ans</span>}
+            {petits && <span className="block text-[10px] font-semibold">dès 7 ans</span>}
           </motion.button>
         </div>
 
@@ -245,7 +249,7 @@ const HomeScreen = ({
           onClick={onBonus}
           whileTap={{ scale: 0.97 }}
         >
-          🎁 Bonus : Défi de la Parole & louange
+          🎁 Bonus : Défi de la Parole & {petits ? "labyrinthe" : "louange"}
         </motion.button>
 
         {onLeaderboard && (

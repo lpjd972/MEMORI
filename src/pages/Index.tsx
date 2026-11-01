@@ -10,6 +10,7 @@ import GameOver from "@/components/GameOver";
 import Leaderboard from "@/components/Leaderboard";
 import BonusTab from "@/components/BonusTab";
 import LouangePause from "@/components/LouangePause";
+import Labyrinthe from "@/components/Labyrinthe";
 import MotsMelesGame from "@/components/MotsMelesGame";
 import VersetsGame from "@/components/VersetsGame";
 import { useGameState, HINT_COST, INITIAL_LIVES } from "@/hooks/useGameState";
@@ -227,7 +228,8 @@ const Index = () => {
     );
   }
 
-  if (jeu) {
+  // Mots mêlés and Versets à trous: from 7 years old only (the little ones cannot read yet)
+  if (jeu && mode !== "petits") {
     const Jeu = jeu === "mots-meles" ? MotsMelesGame : VersetsGame;
     return (
       <Jeu mode={mode} score={score} onSpendStars={spendScore} onEarnStars={addScore} onClose={() => setJeu(null)} />
@@ -258,7 +260,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <AnimatePresence>{showLouange && <LouangePause key="louange" onClose={() => setShowLouange(false)} />}</AnimatePresence>
+      <AnimatePresence>
+        {showLouange &&
+          (mode === "petits" ? (
+            // no YouTube for the little ones: the maze "Rejoins Jésus" instead
+            <Labyrinthe key="labyrinthe" onEarnLives={addLives} onClose={() => setShowLouange(false)} />
+          ) : (
+            <LouangePause key="louange" onClose={() => setShowLouange(false)} />
+          ))}
+      </AnimatePresence>
 
       <AnimatePresence>
         {lowLivesOpen && (
@@ -371,6 +381,7 @@ const Index = () => {
                 score={score}
                 onNext={nextLevel}
                 onLouange={offerLouange ? () => setShowLouange(true) : undefined}
+                louangeLabel={mode === "petits" ? "🧩 Un labyrinthe pour rejoindre Jésus ?" : undefined}
               />
             </motion.div>
           )}
