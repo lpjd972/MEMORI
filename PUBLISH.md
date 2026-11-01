@@ -1,6 +1,6 @@
-# Publier MEMORI sur le Google Play Store
+# Publier Memory Bible sur le Google Play Store
 
-Guide pas-à-pas. MEMORI est une app web (React/Vite) emballée avec **Capacitor**.
+Guide pas-à-pas. Memory Bible (anciennement MEMORI) est une app web (React/Vite) emballée avec **Capacitor**.
 Tu génères un fichier **`.aab`** (Android App Bundle) signé, puis tu l'uploades
 sur le Play Store.
 
@@ -23,16 +23,10 @@ sur le Play Store.
 2. Crée un compte développeur (frais uniques de **25 $**).
 3. Choisis un compte **personnel** ou **organisation** (organisation = vérification d'entreprise).
 
-## 2. Configurer AdMob (sinon risque de suspension)
+## 2. Publicités : aucune
 
-L'app contient un **faux** ID AdMob (`...~XXXXXXXXXX`). Il **doit** être remplacé.
-
-1. Va sur https://apps.admob.com → crée l'app **MEMORI** (Android).
-2. Récupère l'**App ID** (`ca-app-pub-XXXX~YYYY`) et crée tes **blocs publicitaires** (banner, interstitiel).
-3. Remplace les placeholders dans :
-   - `capacitor.config.ts` → champ `AdMob.appId`
-   - `android/app/src/main/AndroidManifest.xml` → meta-data `com.google.android.gms.ads.APPLICATION_ID`
-   - le code qui charge les blocs pub (cherche les IDs dans `src/`)
+Depuis la version 2.0 (Memory Bible, 29/10/2026), l'appli ne contient plus aucune publicité (AdMob et
+AdSense retirés). Dans la Play Console, répondre « Non » à la question sur les annonces.
 
 ## 3. Générer ta clé de signature (keystore) — À GARDER PRÉCIEUSEMENT
 
@@ -85,15 +79,15 @@ Puis menu **Build > Generate Signed Bundle / APK > Android App Bundle**.
 
 Sur la Play Console, crée l'application et remplis :
 
-- **Titre** : MEMORI (30 caractères max)
+- **Titre** : Memory Bible (30 caractères max) — textes prêts dans `STORE_LISTING.md`
 - **Description courte** (80 car.) + **description complète** (4000 car.)
 - **Icône** : 512×512 px PNG
 - **Image de présentation** : 1024×500 px
 - **Captures d'écran** : au moins 2 (téléphone)
-- **Politique de confidentialité** : une URL est **obligatoire** (l'app utilise pubs + Supabase/login)
+- **Politique de confidentialité** : une URL est **obligatoire** (l'app utilise Supabase/login)
 - **Classification du contenu** : remplis le questionnaire
 - **Sécurité des données** (Data safety) : déclare la collecte (compte, pub) — obligatoire
-- **Public cible** et déclaration **publicités** : coche « contient des annonces »
+- **Public cible** et déclaration **publicités** : « ne contient pas d'annonces »
 
 ## 6. Uploader et publier
 
@@ -118,9 +112,32 @@ Puis refais les étapes 4 et 6 avec **le même keystore**.
 
 ---
 
+## Le site web : hébergé sur Firebase
+
+Depuis le 29/10/2026, le site de Memory Bible est hébergé sur **Firebase Hosting** (comme Vie de Louange
+et TMO Discipline), et plus sur Vercel. Réglages : `firebase.json` et `.firebaserc` (projet `memory-bible-jd`).
+
+1. **Une seule fois** : créer le projet Firebase `memory-bible-jd` (le nom `memory-bible` était déjà pris chez Firebase)
+   avec `firebase projects:create memory-bible-jd --display-name "Memory Bible"`, puis dans un
+   terminal ouvert dans le dossier du projet : `firebase login` (JD se connecte lui-même).
+2. **Publier** : `npm run deploy` (construit le site puis l'envoie). Adresse : `https://memory-bible-jd.web.app`.
+3. **Comptes, sauvegardes et classement** : depuis le 30/10/2026, dans le Supabase de JD (organisation
+   « memori », projet `jnfetpxchbnqejizjvef`), et plus dans celui de Lovable. Deux réglages à faire une fois
+   par JD dans https://supabase.com/dashboard/project/jnfetpxchbnqejizjvef :
+   - Authentication → URL Configuration : « Site URL » = `https://memory-bible-jd.web.app`, et ajouter la
+     même adresse dans « Redirect URLs » (sinon les liens de confirmation par e-mail renvoient ailleurs) ;
+   - Authentication → Sign In / Providers → Google : l'activer avec un identifiant Google (Google Cloud
+     Console → Identifiants → ID client OAuth « Application Web », adresse de retour
+     `https://jnfetpxchbnqejizjvef.supabase.co/auth/v1/callback`). Tant que ce n'est pas fait, le bouton
+     « Google » affiche une erreur ; la connexion par e-mail marche.
+4. **Vercel** : une fois le site Firebase en ligne, débrancher le projet `memori` dans Vercel
+   (Settings → Git → Disconnect), pour qu'il ne publie plus de copie à chaque envoi sur GitHub.
+
+L'appli Android ne dépend pas de l'hébergement : elle contient déjà le site.
+
 ## Alternative rapide : PWA / TWA
 
-Comme MEMORI est déjà un site web, tu peux aussi le publier via
+Comme Memory Bible est déjà un site web, tu peux aussi le publier via
 [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) (TWA) si tu héberges
-le site (déjà sur Vercel d'après `vercel.json`). Mais le projet Capacitor actuel
+le site (sur Firebase Hosting, voir ci-dessus). Mais le projet Capacitor actuel
 est déjà prêt — suis ce guide.

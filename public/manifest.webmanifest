@@ -1,0 +1,19 @@
+{
+  "name": "Memory Bible",
+  "short_name": "Memory Bible",
+  "description": "Le Memory de la Bible, des mots mêlés et des versets à trous, pour toute la famille. Gratuit, sans publicité.",
+  "lang": "fr",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f4ee",
+  "theme_color": "#2b3e85",
+  "categories": ["education", "games", "kids"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

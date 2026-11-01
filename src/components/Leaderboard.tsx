@@ -1,18 +1,29 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useCloudSave } from "@/hooks/useCloudSave";
+import { MODES, MODES_ORDER, type ModeAge } from "@/lib/gameData";
+
+interface LeaderboardEntry {
+  score: number;
+  level_reached: number;
+  created_at: string;
+  profiles: { display_name: string | null } | null;
+}
 
 interface LeaderboardProps {
   onClose: () => void;
+  /** Category shown first: players are only compared with their own age group */
+  mode: ModeAge;
 }
 
-const Leaderboard = ({ onClose }: LeaderboardProps) => {
+const Leaderboard = ({ onClose, mode }: LeaderboardProps) => {
   const { getLeaderboard } = useCloudSave(undefined);
-  const [entries, setEntries] = useState<any[]>([]);
+  const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
+  const [categorie, setCategorie] = useState<ModeAge>(mode);
 
   useEffect(() => {
-    getLeaderboard().then(setEntries);
-  }, [getLeaderboard]);
+    getLeaderboard(categorie).then((rows) => setEntries(rows as unknown as LeaderboardEntry[]));
+  }, [getLeaderboard, categorie]);
 
   const medals = ["🥇", "🥈", "🥉"];
 
@@ -26,6 +37,21 @@ const Leaderboard = ({ onClose }: LeaderboardProps) => {
         <button onClick={onClose} className="text-sm font-bold text-muted-foreground">← Retour</button>
         <h2 className="text-2xl font-black text-foreground">🏆 Classement</h2>
         <div className="w-16" />
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 w-full max-w-md">
+        {MODES_ORDER.map((m) => (
+          <button
+            key={m}
+            onClick={() => setCategorie(m)}
+            className={`rounded-xl px-1 py-2 text-xs font-extrabold border-2 ${
+              categorie === m ? "border-primary bg-primary/10 text-foreground" : "border-border bg-card text-muted-foreground"
+            }`}
+            aria-pressed={categorie === m}
+          >
+            {MODES[m].emoji} {MODES[m].label}
+          </button>
+        ))}
       </div>
 
       <div className="w-full max-w-md space-y-2">
@@ -46,7 +72,7 @@ const Leaderboard = ({ onClose }: LeaderboardProps) => {
               </span>
               <div>
                 <p className="font-bold text-foreground text-sm">
-                  {(entry.profiles as any)?.display_name ?? "Joueur"}
+                  {entry.profiles?.display_name ?? "Joueur"}
                 </p>
                 <p className="text-xs text-muted-foreground">Niveau {entry.level_reached}</p>
               </div>

@@ -21,6 +21,7 @@ export type Database = {
           last_saved_at: string
           levels_completed: number
           lives: number
+          mode: string
           user_id: string
         }
         Insert: {
@@ -29,6 +30,7 @@ export type Database = {
           last_saved_at?: string
           levels_completed?: number
           lives?: number
+          mode?: string
           user_id: string
         }
         Update: {
@@ -37,6 +39,7 @@ export type Database = {
           last_saved_at?: string
           levels_completed?: number
           lives?: number
+          mode?: string
           user_id?: string
         }
         Relationships: []
@@ -46,6 +49,7 @@ export type Database = {
           created_at: string
           id: string
           level_reached: number
+          mode: string
           score: number
           user_id: string
         }
@@ -53,6 +57,7 @@ export type Database = {
           created_at?: string
           id?: string
           level_reached: number
+          mode?: string
           score: number
           user_id: string
         }
@@ -60,10 +65,19 @@ export type Database = {
           created_at?: string
           id?: string
           level_reached?: number
+          mode?: string
           score?: number
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "game_scores_user_id_profiles_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {

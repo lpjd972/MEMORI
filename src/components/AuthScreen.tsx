@@ -1,3 +1,4 @@
+import { Capacitor } from "@capacitor/core";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
@@ -45,9 +46,9 @@ const AuthScreen = ({ onSuccess }: AuthScreenProps) => {
         animate={{ scale: 1, rotate: [0, 5, -5, 0] }}
         transition={{ duration: 0.6 }}
       >
-        🧠
+        📖
       </motion.div>
-      <h1 className="text-3xl font-black text-foreground">Memori Ultime</h1>
+      <h1 className="text-3xl font-black text-foreground">Memory Bible</h1>
 
       <motion.form
         className="w-full max-w-sm bg-card rounded-2xl p-6 shadow-lg space-y-4"
@@ -91,13 +92,17 @@ const AuthScreen = ({ onSuccess }: AuthScreenProps) => {
           {loading ? "..." : isLogin ? "Se connecter" : "Créer un compte"}
         </motion.button>
 
-        <div className="relative text-center">
-          <span className="text-xs text-muted-foreground bg-card px-2 relative z-10">ou</span>
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-border" />
+        {/* Google refuses sign-in inside an app's web view: in the Android app, e-mail sign-in only */}
+        {!Capacitor.isNativePlatform() && (
+          <div className="relative text-center">
+            <span className="text-xs text-muted-foreground bg-card px-2 relative z-10">ou</span>
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-border" />
+            </div>
           </div>
-        </div>
+        )}
 
+        {!Capacitor.isNativePlatform() && (
         <motion.button
           type="button"
           onClick={handleGoogle}
@@ -113,6 +118,7 @@ const AuthScreen = ({ onSuccess }: AuthScreenProps) => {
           </svg>
           Continuer avec Google
         </motion.button>
+        )}
 
         <p className="text-center text-sm text-muted-foreground">
           {isLogin ? "Pas de compte ?" : "Déjà un compte ?"}

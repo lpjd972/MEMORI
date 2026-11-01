@@ -1,16 +1,17 @@
 import { useState, useCallback } from "react";
-import { getLevelConfig, QUIZ_QUESTIONS, shuffleArray } from "@/lib/gameData";
+import type { Progression } from "@/lib/progression";
 
 export interface GameState {
   lives: number;
   currentLevel: number;
   score: number;
-  phase: "home" | "memory" | "enigma" | "quiz" | "levelComplete" | "gameOver";
+  phase: "home" | "memory" | "quiz" | "levelComplete" | "gameOver";
   levelsCompleted: number;
 }
 
-const INITIAL_LIVES = 100;
-const HINT_COST = 3;
+export const INITIAL_LIVES = 100;
+export const HINT_COST = 3;
+export const QUIZ_BONUS = 50;
 
 export function useGameState(initialState?: Partial<GameState>) {
   const [gameState, setGameState] = useState<GameState>({
@@ -22,15 +23,15 @@ export function useGameState(initialState?: Partial<GameState>) {
   });
 
   const startGame = useCallback(() => {
-    setGameState((prev) => ({ ...prev, phase: "memory" }));
+    setGameState((prev) => ({ ...prev, lives: prev.lives > 0 ? prev.lives : INITIAL_LIVES, phase: "memory" }));
   }, []);
 
-  /** Go back to home without resetting progress */
+  /** Back to the menu without losing progress (lives are refilled after a game over) */
   const goHome = useCallback(() => {
-    setGameState((prev) => ({ ...prev, phase: "home" }));
+    setGameState((prev) => ({ ...prev, lives: prev.lives > 0 ? prev.lives : INITIAL_LIVES, phase: "home" }));
   }, []);
 
-  /** Full reset to level 1 */
+  /** Full reset: back to Genesis */
   const restartGame = useCallback(() => {
     setGameState({
       lives: INITIAL_LIVES,
@@ -50,14 +51,15 @@ export function useGameState(initialState?: Partial<GameState>) {
     }));
   }, []);
 
-  const loadSavedState = useCallback((saved: Partial<GameState>) => {
-    setGameState((prev) => ({
-      ...prev,
-      lives: saved.lives ?? prev.lives,
-      currentLevel: saved.currentLevel ?? prev.currentLevel,
-      score: saved.score ?? prev.score,
-      levelsCompleted: saved.levelsCompleted ?? prev.levelsCompleted,
-    }));
+  /** Switch to another player's progress (age category), or a fresh start when there is none */
+  const replaceProgress = useCallback((saved: Progression | null) => {
+    setGameState({
+      lives: saved && saved.lives > 0 ? saved.lives : INITIAL_LIVES,
+      currentLevel: saved?.currentLevel ?? 1,
+      score: saved?.score ?? 0,
+      phase: "home",
+      levelsCompleted: saved?.levelsCompleted ?? 0,
+    });
   }, []);
 
   const loseLives = useCallback((amount: number) => {
@@ -70,54 +72,23 @@ export function useGameState(initialState?: Partial<GameState>) {
     });
   }, []);
 
-  /** Spend HINT_COST points to get a hint. Returns true if affordable. */
-  const useHint = useCallback((): boolean => {
-    let success = false;
-    setGameState((prev) => {
-      if (prev.score >= HINT_COST) {
-        success = true;
-        return { ...prev, score: prev.score - HINT_COST };
-      }
-      return prev;
-    });
-    return success;
+  /** Spend points (e.g. a hint). The caller checks the score first. */
+  const spendScore = useCallback((amount: number) => {
+    setGameState((prev) => ({ ...prev, score: Math.max(0, prev.score - amount) }));
   }, []);
 
-  /** Add lives (e.g. from watching ads) */
-  const addLives = useCallback((amount: number) => {
-    setGameState((prev) => ({ ...prev, lives: prev.lives + amount }));
-  }, []);
-
-  /** Add score points (e.g. from watching ads) */
+  /** Add stars (e.g. a finished word search) */
   const addScore = useCallback((amount: number) => {
     setGameState((prev) => ({ ...prev, score: prev.score + amount }));
   }, []);
 
-  /** Skip current level (advance without completing) */
-  const skipLevel = useCallback(() => {
-    setGameState((prev) => ({
-      ...prev,
-      currentLevel: prev.currentLevel + 1,
-      phase: "memory",
-    }));
+  /** Add lives (e.g. from the Bible challenge) */
+  const addLives = useCallback((amount: number) => {
+    setGameState((prev) => ({ ...prev, lives: prev.lives + amount }));
   }, []);
 
   const completeMemory = useCallback((bonusScore: number) => {
-    setGameState((prev) => {
-      const config = getLevelConfig(prev.currentLevel);
-      if (config.hasEnigma) {
-        return { ...prev, score: prev.score + bonusScore, phase: "enigma" };
-      }
-      return { ...prev, score: prev.score + bonusScore, phase: "quiz" };
-    });
-  }, []);
-
-  const completeEnigma = useCallback((bonusScore: number) => {
-    setGameState((prev) => ({
-      ...prev,
-      score: prev.score + bonusScore,
-      phase: "quiz",
-    }));
+    setGameState((prev) => ({ ...prev, score: prev.score + bonusScore, phase: "quiz" }));
   }, []);
 
   const completeQuiz = useCallback((correct: boolean) => {
@@ -129,7 +100,7 @@ export function useGameState(initialState?: Partial<GameState>) {
       }
       return {
         ...prev,
-        score: prev.score + 50,
+        score: prev.score + QUIZ_BONUS,
         phase: "levelComplete",
         levelsCompleted: prev.levelsCompleted + 1,
       };
@@ -144,27 +115,19 @@ export function useGameState(initialState?: Partial<GameState>) {
     }));
   }, []);
 
-  const getRandomQuestion = useCallback(() => {
-    const shuffled = shuffleArray(QUIZ_QUESTIONS);
-    return shuffled[0];
-  }, []);
-
   return {
     gameState,
     startGame,
     goHome,
     restartGame,
     continueAfterGameOver,
-    loadSavedState,
+    replaceProgress,
     loseLives,
-    useHint,
-    addLives,
+    spendScore,
     addScore,
-    skipLevel,
+    addLives,
     completeMemory,
-    completeEnigma,
     completeQuiz,
     nextLevel,
-    getRandomQuestion,
   };
 }

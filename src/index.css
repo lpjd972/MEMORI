@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 40 33% 97%;
+    --background: 40 40% 96%;
     --foreground: 220 25% 15%;
 
     --card: 0 0% 100%;
@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 25% 15%;
 
-    --primary: 199 89% 48%;
+    --primary: 226 55% 42%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 160 50% 48%;
@@ -24,7 +24,7 @@
     --muted: 210 20% 92%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 35 95% 60%;
+    --accent: 38 92% 48%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 55%;
@@ -32,19 +32,19 @@
 
     --border: 210 20% 88%;
     --input: 210 20% 88%;
-    --ring: 199 89% 48%;
+    --ring: 226 55% 42%;
 
     --radius: 1rem;
 
     /* Custom game tokens */
     --game-surface: 210 25% 95%;
-    --game-card-back: 199 89% 48%;
+    --game-card-back: 226 55% 42%;
     --game-card-matched: 160 50% 48%;
     --game-card-wrong: 0 72% 55%;
     --game-gold: 45 100% 55%;
     --game-lives: 0 80% 55%;
-    --game-gradient-start: 199 89% 48%;
-    --game-gradient-end: 220 70% 55%;
+    --game-gradient-start: 226 55% 42%;
+    --game-gradient-end: 252 48% 52%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
