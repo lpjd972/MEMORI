@@ -56,6 +56,16 @@ export const VIE_DE_LOUANGE = {
   accroche: "Un site pour rendre gloire à Dieu : louange, témoignage et partage.",
 };
 
+/**
+ * Pour les 3-6 ans, pas de vidéo YouTube : on présente l'appli gratuite « Bible App pour les enfants »
+ * (YouVersion et OneHope), avec ses autres jeux. Simple lien vers son site officiel, sans partenariat.
+ */
+export const BIBLE_APP_ENFANTS = {
+  nom: "La Bible App pour les enfants",
+  url: "https://bibleappforkids.com",
+  accroche: "Une appli gratuite pour découvrir les histoires de la Bible, à faire avec un parent.",
+};
+
 const CLE_COMPTEUR = "memory-bible-pauses-louange";
 
 /** Une pause louange sur deux présente le site Vie de Louange au lieu d'un chant YouTube. */

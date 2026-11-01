@@ -1,6 +1,6 @@
 # Memory Bible (anciennement MEMORI)
 
-Le jeu de Memory de la Bible, de la Genèse à l'Apocalypse, pour jouer de 3 à 99 ans.
+Le jeu de Memory de la Bible, de la Genèse à l'Apocalypse, pour jouer de 3 à 99 ans — avec aussi des mots mêlés et des versets à trous.
 On retrouve les paires de cartes d'une histoire biblique, puis une question sur cette histoire ouvre le
 niveau suivant. Aucune publicité. Refonte complète du 29/10/2026 : voir
 [`docs/2026-10-29_CHECK-UP-et-REFONTE.md`](docs/2026-10-29_CHECK-UP-et-REFONTE.md).
@@ -11,6 +11,8 @@ niveau suivant. Aucune publicité. Refonte complète du 29/10/2026 : voir
 |---|---|
 | `src/lib/bible/histoires.ts` | les 31 histoires, dans l'ordre de la Bible : titre, passage, résumé, verset (Louis Segond 1910), cartes |
 | `src/lib/bible/questions.ts` | les questions (niveau 1 petits, 2 enfants, 3 ados et adultes), avec leur référence |
+| `src/lib/bible/motsMeles.ts`, `src/lib/bible/versets.ts` | les mots des mots mêlés et les versets à trous, avec leur référence |
+| `src/components/MotsMelesGame.tsx`, `VersetsGame.tsx`, `Labyrinthe.tsx` | les deux autres jeux et le labyrinthe des petits |
 | `src/lib/louanges.ts` | les chants de la « Pause louange » (liens YouTube, à remplir) |
 | `src/lib/gameData.ts` | les règles : taille des plateaux, vies perdues, choix des questions selon l'âge |
 | `src/pages/Index.tsx` | l'enchaînement des écrans : accueil → Memory → question → verset → niveau suivant |

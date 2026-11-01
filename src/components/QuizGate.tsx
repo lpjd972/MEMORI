@@ -67,11 +67,12 @@ const QuizGate = ({
     setAnswered(false);
   };
 
-  /** Hint: removes wrong answers until only two choices remain */
+  /** Hint: each purchase crosses out one wrong answer, until two choices remain */
+  const canBuyHint = question.options.length - hidden.length > 2;
   const buyHint = () => {
-    if (!onSpendHint || score === undefined || score < HINT_COST || hidden.length > 0) return;
-    const wrong = question.options.map((_, i) => i).filter((i) => i !== question.correctIndex);
-    setHidden(shuffleArray(wrong).slice(0, question.options.length - 2));
+    if (!onSpendHint || score === undefined || score < HINT_COST || !canBuyHint) return;
+    const wrong = question.options.map((_, i) => i).filter((i) => i !== question.correctIndex && !hidden.includes(i));
+    setHidden((h) => [...h, shuffleArray(wrong)[0]]);
     onSpendHint();
   };
 
@@ -96,8 +97,10 @@ const QuizGate = ({
         <div className="space-y-3">
           {order.map((i) => {
             const option = question.options[i];
-            if (hidden.includes(i)) return null;
-            let style = "bg-game-surface text-foreground border-2 border-transparent";
+            const barre = hidden.includes(i);
+            let style = barre
+              ? "bg-muted text-muted-foreground line-through opacity-50 border-2 border-transparent"
+              : "bg-game-surface text-foreground border-2 border-transparent";
             if (answered && isCorrect && i === question.correctIndex) {
               style = "bg-game-card-matched text-secondary-foreground border-2 border-secondary";
             } else if (answered && i === selected && i !== question.correctIndex) {
@@ -109,8 +112,8 @@ const QuizGate = ({
                 key={i}
                 className={`w-full text-left px-4 py-3 rounded-xl font-semibold transition-all ${style}`}
                 onClick={() => handleSelect(i)}
-                disabled={answered}
-                whileTap={!answered ? { scale: 0.97 } : {}}
+                disabled={answered || barre}
+                whileTap={!answered && !barre ? { scale: 0.97 } : {}}
               >
                 {option}
               </motion.button>
@@ -171,14 +174,14 @@ const QuizGate = ({
         )}
       </div>
 
-      {onSpendHint && score !== undefined && !answered && hidden.length === 0 && question.options.length > 2 && (
+      {onSpendHint && score !== undefined && !answered && canBuyHint && (
         <div className="text-center mt-4">
           <button
             onClick={buyHint}
             disabled={score < HINT_COST}
             className="text-xs font-bold bg-primary/10 text-primary px-4 py-2 rounded-lg hover:bg-primary/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            💡 Indice : retirer des mauvaises réponses ({HINT_COST} ⭐)
+            💡 Indice : barrer une mauvaise réponse ({HINT_COST} ⭐)
           </button>
         </div>
       )}

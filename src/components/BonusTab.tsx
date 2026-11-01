@@ -2,14 +2,19 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import QuizGate from "./QuizGate";
 import LouangePause from "./LouangePause";
+import Labyrinthe from "./Labyrinthe";
 import { pickBonusQuestions, type ModeAge, type QuizQuestion } from "@/lib/gameData";
-import { LOUANGES, VIES_PAUSE_PSAUME } from "@/lib/louanges";
+import { BIBLE_APP_ENFANTS, LOUANGES, VIE_DE_LOUANGE, VIES_PAUSE_PSAUME } from "@/lib/louanges";
+import { PRIX_INDICE } from "@/lib/jeux";
 import { lirePalier, lireQuestionsVues, monterPalier, noterQuestionsVues } from "@/lib/defi";
 
 interface BonusTabProps {
   level: number;
   mode: ModeAge;
   onEarnLives: (amount: number) => void;
+  /** Stars are the game's money: 3 stars buy 3 hearts */
+  score: number;
+  onSpendStars: (n: number) => void;
   onClose: () => void;
 }
 
@@ -22,7 +27,8 @@ const DEFI_MAX = DEFI_QUESTIONS * LIVES_PER_GOOD_ANSWER + PERFECT_BONUS;
 const DEFI_REUSSI = 2;
 
 /** Lives are earned by answering Bible questions; the worship break is free and unrewarded. */
-const BonusTab = ({ level, mode, onEarnLives, onClose }: BonusTabProps) => {
+const BonusTab = ({ level, mode, onEarnLives, score, onSpendStars, onClose }: BonusTabProps) => {
+  const [labyrinthe, setLabyrinthe] = useState(false);
   const [defi, setDefi] = useState<QuizQuestion[] | null>(null);
   const [index, setIndex] = useState(0);
   const [goodAnswers, setGoodAnswers] = useState(0);
@@ -65,6 +71,7 @@ const BonusTab = ({ level, mode, onEarnLives, onClose }: BonusTabProps) => {
   return (
     <>
       <AnimatePresence>
+        {labyrinthe && <Labyrinthe key="labyrinthe" onEarnLives={onEarnLives} onClose={() => setLabyrinthe(false)} />}
         {louangeMode && (
           <LouangePause
             key="louange"
@@ -161,25 +168,84 @@ const BonusTab = ({ level, mode, onEarnLives, onClose }: BonusTabProps) => {
                   </span>
                 </motion.button>
 
-                {LOUANGES.length > 0 && (
-                  <motion.button
-                    className="flex items-center gap-4 p-4 bg-card rounded-xl border border-border shadow-sm hover:border-primary/50 transition-colors text-left"
-                    onClick={() => setLouangeMode("chant")}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <span className="text-3xl">🎵</span>
-                    <div className="flex-1">
-                      <p className="font-bold text-foreground">Pause louange (30 s)</p>
-                      <p className="text-xs text-muted-foreground">
-                        Découvre un chant de louange d'une chaîne YouTube chrétienne.
-                      </p>
-                    </div>
-                  </motion.button>
+                <motion.button
+                  className="flex items-center gap-4 p-4 bg-card rounded-xl border border-border shadow-sm hover:border-primary/50 transition-colors text-left disabled:opacity-40"
+                  onClick={() => {
+                    onSpendStars(PRIX_INDICE);
+                    onEarnLives(PRIX_INDICE);
+                  }}
+                  disabled={score < PRIX_INDICE}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="text-3xl">⭐</span>
+                  <div className="flex-1">
+                    <p className="font-bold text-foreground">Échanger des étoiles</p>
+                    <p className="text-xs text-muted-foreground">
+                      {PRIX_INDICE} ⭐ = {PRIX_INDICE} ❤️. Tu as {score} ⭐.
+                    </p>
+                  </div>
+                  <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg whitespace-nowrap">
+                    -{PRIX_INDICE} ⭐ +{PRIX_INDICE} ❤️
+                  </span>
+                </motion.button>
+
+                {mode === "petits" ? (
+                  <>
+                    <motion.button
+                      className="flex items-center gap-4 p-4 bg-card rounded-xl border border-border shadow-sm hover:border-primary/50 transition-colors text-left"
+                      onClick={() => setLabyrinthe(true)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="text-3xl">🧩</span>
+                      <div className="flex-1">
+                        <p className="font-bold text-foreground">Labyrinthe : rejoins Jésus</p>
+                        <p className="text-xs text-muted-foreground">Avec papa ou maman, guide l'enfant jusqu'à Jésus.</p>
+                      </div>
+                      <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg whitespace-nowrap">
+                        +{VIES_PAUSE_PSAUME} ❤️
+                      </span>
+                    </motion.button>
+                    <a href={BIBLE_APP_ENFANTS.url} target="_blank" rel="noreferrer" className="flex items-center gap-4 p-4 bg-card rounded-xl border border-border shadow-sm hover:border-primary/50 transition-colors text-left">
+                      <span className="text-3xl">📱</span>
+                      <div className="flex-1">
+                        <p className="font-bold text-foreground">{BIBLE_APP_ENFANTS.nom}</p>
+                        <p className="text-xs text-muted-foreground">{BIBLE_APP_ENFANTS.accroche}</p>
+                      </div>
+                    </a>
+                  </>
+                ) : (
+                  LOUANGES.length > 0 && (
+                    <motion.button
+                      className="flex items-center gap-4 p-4 bg-card rounded-xl border border-border shadow-sm hover:border-primary/50 transition-colors text-left"
+                      onClick={() => setLouangeMode("chant")}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="text-3xl">🎵</span>
+                      <div className="flex-1">
+                        <p className="font-bold text-foreground">Pause louange (30 s)</p>
+                        <p className="text-xs text-muted-foreground">
+                          Découvre un chant de louange d'une chaîne YouTube chrétienne.
+                        </p>
+                      </div>
+                    </motion.button>
+                  )
                 )}
+
+                <a href={VIE_DE_LOUANGE.url} target="_blank" rel="noreferrer" className="flex items-center gap-4 p-4 bg-card rounded-xl border border-border shadow-sm hover:border-primary/50 transition-colors text-left">
+                  <span className="text-3xl">🎶</span>
+                  <div className="flex-1">
+                    <p className="font-bold text-foreground">{VIE_DE_LOUANGE.nom}</p>
+                    <p className="text-xs text-muted-foreground">{VIE_DE_LOUANGE.accroche}</p>
+                  </div>
+                </a>
               </div>
               <p className="text-[11px] text-muted-foreground text-center max-w-sm mt-2">
-                Aucune publicité dans Memory Bible. Les chants viennent de chaînes de louange, pour les faire connaître.
+                Aucune publicité dans Memory Bible.{" "}
+                {mode === "petits"
+                  ? "Les petits jouent avec un parent : les écrans, c'est ensemble !"
+                  : "Les chants viennent de chaînes de louange, pour les faire connaître."}
               </p>
             </>
           )}

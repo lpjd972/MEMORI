@@ -12,6 +12,8 @@ interface HomeScreenProps {
   levels: Partial<Record<ModeAge, number>>;
   onRestart: () => void;
   onBonus: () => void;
+  /** The two other games: word search and fill-in-the-blank verses */
+  onJeu: (jeu: "mots-meles" | "versets") => void;
   user?: User | null;
   profile?: { display_name: string | null; is_premium: boolean } | null;
   onAuthClick?: () => void;
@@ -27,6 +29,7 @@ const HomeScreen = ({
   levels,
   onRestart,
   onBonus,
+  onJeu,
   user,
   profile,
   onAuthClick,
@@ -97,6 +100,11 @@ const HomeScreen = ({
           ))}
         </div>
         <p className="text-xs text-muted-foreground mt-2 text-center">{MODES[mode].description}</p>
+        {mode === "petits" && (
+          <p className="text-xs font-bold text-primary mt-1 text-center">
+            👨‍👩‍👧 Les petits jouent avec un parent : les écrans, c'est ensemble !
+          </p>
+        )}
       </motion.div>
 
       <motion.div
@@ -111,9 +119,28 @@ const HomeScreen = ({
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
         >
-          ▶ {currentLevel > 1 ? `Continuer · niveau ${currentLevel}` : "Jouer"}
+          🧠 Memory · {currentLevel > 1 ? `continuer niveau ${currentLevel}` : "jouer"}
         </motion.button>
         {currentLevel > 1 && <p className="text-xs text-muted-foreground -mt-1">{current.label}</p>}
+
+        <div className="grid grid-cols-2 gap-2 w-full">
+          <motion.button
+            className="bg-card text-foreground font-bold py-3 rounded-xl shadow-sm border border-border"
+            onClick={() => onJeu("mots-meles")}
+            whileTap={{ scale: 0.97 }}
+          >
+            🔤 Mots mêlés
+          </motion.button>
+          <motion.button
+            className="bg-card text-foreground font-bold py-3 rounded-xl shadow-sm border border-border disabled:opacity-40"
+            onClick={() => onJeu("versets")}
+            disabled={mode === "petits"}
+            whileTap={{ scale: 0.97 }}
+          >
+            ✍️ Versets à trous
+            {mode === "petits" && <span className="block text-[10px] font-semibold">dès 7 ans</span>}
+          </motion.button>
+        </div>
 
         <motion.button
           className="w-full bg-card text-foreground font-bold py-3 rounded-xl shadow-sm border border-border"

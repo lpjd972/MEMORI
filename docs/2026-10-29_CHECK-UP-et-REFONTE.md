@@ -160,3 +160,19 @@ de YouTube : je le déconseille.
     leur classement et la difficulté de leur Défi de la Parole. Les boutons « Qui joue ? » affichent le niveau de
     chacun (« Niveau 18 », « Nouveau »). Base : colonne `mode` dans `game_progress` (clé : joueur + catégorie) et
     `game_scores`. La progression déjà faite sur le compte familial a été rangée dans « Petits » (niveau 18).
+15. **Trois jeux, les étoiles comme monnaie, et les petits sans YouTube** (demandes de JD du 01/11/2026) :
+    - l'accueil propose 3 jeux : 🧠 Memory, 🔤 **Mots mêlés**, ✍️ **Versets à trous** (les deux derniers dès 7 ans) ;
+    - **Mots mêlés** : on lit d'abord le résumé de l'histoire, puis on cherche ses mots dans la grille (toucher la
+      première puis la dernière lettre). Les mots trouvés se colorent et se barrent dans la liste, avec leur verset.
+      Des **mots pièges** d'autres histoires s'y cachent : en trouver un explique d'où il vient (« … n'est pas dans
+      l'histoire de … On le trouve dans … : Apocalypse 5:1 »). Grilles plus grandes, plus de mots, sens plus variés et
+      plus de pièges au fil des niveaux. Fin de grille : le verset de l'histoire et où lire chaque mot ;
+    - **Versets à trous** : 42 versets clés (Louis Segond 1910 : Abraham, Moïse, Josué, David, Jésus…) à compléter
+      avec une banque de mots ; plus de trous et plus de mots pièges au fil des niveaux. Une erreur → « Ouvre ta
+      Bible à … » et un lien vers le chapitre ; jamais la réponse donnée ;
+    - **étoiles** : 3 ⭐ = 3 ❤️ (Bonus → « Échanger des étoiles ») ; dans la question du Memory, 3 ⭐ barrent une
+      mauvaise réponse ; dans les nouveaux jeux, 3 ⭐ donnent un indice. Les gains par niveau ne changent pas ;
+    - **Petits (3-6 ans)** : plus de YouTube. À la place : le **labyrinthe « Rejoins Jésus »** (« Laissez venir à moi
+      les petits enfants », Matthieu 19:14) : +9 ❤️ après 30 s, on peut continuer, les labyrinthes grandissent ; un
+      lien vers « La Bible App pour les enfants » (bibleappforkids.com) ; le lien Vie de Louange reste. Message à
+      l'accueil et dans le Bonus : les petits jouent avec un parent.

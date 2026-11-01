@@ -77,6 +77,11 @@ export function useGameState(initialState?: Partial<GameState>) {
     setGameState((prev) => ({ ...prev, score: Math.max(0, prev.score - amount) }));
   }, []);
 
+  /** Add stars (e.g. a finished word search) */
+  const addScore = useCallback((amount: number) => {
+    setGameState((prev) => ({ ...prev, score: prev.score + amount }));
+  }, []);
+
   /** Add lives (e.g. from the Bible challenge) */
   const addLives = useCallback((amount: number) => {
     setGameState((prev) => ({ ...prev, lives: prev.lives + amount }));
@@ -119,6 +124,7 @@ export function useGameState(initialState?: Partial<GameState>) {
     replaceProgress,
     loseLives,
     spendScore,
+    addScore,
     addLives,
     completeMemory,
     completeQuiz,

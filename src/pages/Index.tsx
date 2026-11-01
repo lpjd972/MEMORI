@@ -10,6 +10,8 @@ import GameOver from "@/components/GameOver";
 import Leaderboard from "@/components/Leaderboard";
 import BonusTab from "@/components/BonusTab";
 import LouangePause from "@/components/LouangePause";
+import MotsMelesGame from "@/components/MotsMelesGame";
+import VersetsGame from "@/components/VersetsGame";
 import { useGameState, HINT_COST, INITIAL_LIVES } from "@/hooks/useGameState";
 import { useAuth } from "@/hooks/useAuth";
 import { useCloudSave } from "@/hooks/useCloudSave";
@@ -40,6 +42,7 @@ const Index = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showBonus, setShowBonus] = useState(false);
   const [showLouange, setShowLouange] = useState(false);
+  const [jeu, setJeu] = useState<"mots-meles" | "versets" | null>(null);
   const [mode, setMode] = useState<ModeAge>(readMode);
 
   const {
@@ -51,6 +54,7 @@ const Index = () => {
     replaceProgress,
     loseLives,
     spendScore,
+    addScore,
     addLives,
     completeMemory,
     completeQuiz,
@@ -62,6 +66,8 @@ const Index = () => {
   const [levels, setLevels] = useState<Partial<Record<ModeAge, number>>>({});
   // Guards against a slow load overwriting a newer one (quick category changes)
   const loadTokenRef = useRef(0);
+  // Category whose progress is currently in the game state: only that one may be saved
+  const loadedModeRef = useRef<ModeAge | null>(null);
 
   const { phase, lives, currentLevel, score } = gameState;
 
@@ -100,6 +106,7 @@ const Index = () => {
       const token = ++loadTokenRef.current;
       const saved = user ? await loadProgress(m) : lireProgressionLocale(m);
       if (token !== loadTokenRef.current) return;
+      loadedModeRef.current = m;
       replaceProgress(saved);
       refreshLevels();
     },
@@ -109,6 +116,7 @@ const Index = () => {
   const changeMode = useCallback(
     (m: ModeAge) => {
       if (m === mode) return;
+      loadedModeRef.current = null;
       setMode(m);
       try {
         localStorage.setItem(MODE_KEY, m);
@@ -126,9 +134,10 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authLoading, user?.id]);
 
-  // Auto-save progress while playing (never on the home screen, where the category can change)
+  // Auto-save progress (stars and lives also change from the home screen: Bonus, other games),
+  // but only once the current category's own progress is loaded
   useEffect(() => {
-    if (phase !== "home" && phase !== "gameOver") {
+    if (phase !== "gameOver" && loadedModeRef.current === mode) {
       persist(mode, gameState);
     }
   }, [gameState, phase, mode, persist]);
@@ -207,7 +216,21 @@ const Index = () => {
 
   if (showBonus) {
     return (
-      <BonusTab level={currentLevel} mode={mode} onEarnLives={addLives} onClose={() => setShowBonus(false)} />
+      <BonusTab
+        level={currentLevel}
+        mode={mode}
+        onEarnLives={addLives}
+        score={score}
+        onSpendStars={spendScore}
+        onClose={() => setShowBonus(false)}
+      />
+    );
+  }
+
+  if (jeu) {
+    const Jeu = jeu === "mots-meles" ? MotsMelesGame : VersetsGame;
+    return (
+      <Jeu mode={mode} score={score} onSpendStars={spendScore} onEarnStars={addScore} onClose={() => setJeu(null)} />
     );
   }
 
@@ -221,6 +244,7 @@ const Index = () => {
         levels={levels}
         onRestart={handleRestart}
         onBonus={() => setShowBonus(true)}
+        onJeu={setJeu}
         user={user}
         profile={profile}
         onAuthClick={() => setShowAuth(true)}
