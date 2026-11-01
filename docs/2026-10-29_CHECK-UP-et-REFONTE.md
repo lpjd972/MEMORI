@@ -176,3 +176,17 @@ de YouTube : je le déconseille.
       les petits enfants », Matthieu 19:14) : +9 ❤️ après 30 s, on peut continuer, les labyrinthes grandissent ; un
       lien vers « La Bible App pour les enfants » (bibleappforkids.com) ; le lien Vie de Louange reste. Message à
       l'accueil et dans le Bonus : les petits jouent avec un parent.
+16. **Guide, écran d'accueil du téléphone, et gratuité totale** (demandes de JD du 01/11/2026) :
+    - **guide du jeu** : à la première visite, de petites fenêtres montrent chaque bouton de l'accueil (qui joue,
+      les 3 jeux, le Bonus, les étoiles, le classement, le compte si on n'est pas inscrit, l'écran d'accueil).
+      On peut le passer, le revoir (« ❓ Guide du jeu ») et choisir s'il s'affiche à chaque ouverture (interrupteur
+      « À l'ouverture », réglage gardé sur l'appareil) ;
+    - **sur l'écran d'accueil** : le site est devenu une appli web installable (manifeste, icônes, petit service
+      worker « réseau d'abord » pour rester à jour). Bouton « 📲 Mettre le jeu sur l'écran d'accueil » : sur Android,
+      il ouvre directement la fenêtre d'installation de Chrome ; sur iPhone, il explique Partager → « Sur l'écran
+      d'accueil ». Le bouton disparaît quand le jeu est ouvert depuis l'icône ;
+    - **règle de JD : aucun argent dans l'appli**. Installation et jeu gratuits ; aucun achat, aucun abonnement,
+      aucune publicité. Les vies se gagnent en jouant (Défi de la Parole, pause psaume, louange pour les grands,
+      labyrinthe pour les petits) ; les étoiles se gagnent en réussissant des niveaux et ne s'achètent jamais.
+      Le badge « Premium » hérité de l'ancien jeu a été retiré de l'accueil (la colonne `is_premium` reste en base,
+      sans usage).

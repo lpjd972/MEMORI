@@ -49,8 +49,8 @@ Chaque niveau raconte une histoire de la Bible : Noé et l'arche, Moïse et la m
 • Une question ratée ? Le jeu t'indique le chapitre de la Bible à relire pour trouver la réponse
 • Des niveaux infinis, un classement par âge et la sauvegarde de ta progression (compte facultatif)
 
-🆓 GRATUIT ET SANS PUBLICITÉ
-Aucune publicité. Joue autant que tu veux.
+🆓 100 % GRATUIT
+Aucune publicité, aucun achat, aucun abonnement. Les vies et les étoiles se gagnent seulement en jouant.
 
 « Ta parole est une lampe à mes pieds, et une lumière sur mon sentier. » — Psaume 119:105
 ```
@@ -74,6 +74,11 @@ Tout est prêt dans `docs/play-store/` (fait le 01/11/2026) :
 | Image de présentation | `docs/play-store/banniere-1024x500.png` | 1024 × 500 |
 | Captures d'écran téléphone (8) | `docs/play-store/1-accueil.png` … `8-plateau-adultes.png` | 1080 × 1920 |
 
+
+## Prix et achats (règle de JD du 01/11/2026)
+
+- Application **gratuite**. « Achats intégrés » → **Non**. Aucun abonnement, aucun paiement : jamais un centime
+  demandé (carte, compte Google ou Apple). Ne jamais ajouter de bibliothèque de paiement (Google Play Billing, Stripe…).
 
 ## Annonces
 

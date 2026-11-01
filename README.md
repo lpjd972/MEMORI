@@ -19,6 +19,11 @@ niveau suivant. Aucune publicité. Refonte complète du 29/10/2026 : voir
 | `outils/generer-icones.mjs` | refait le logo et les icônes Android à partir de `public/logo.svg` |
 | `PUBLISH.md`, `STORE_LISTING.md`, `PRIVACY.md` | publication sur le Play Store, textes de la fiche, confidentialité |
 
+## Règle de JD : gratuit, sans argent
+
+Memory Bible est gratuit et le reste : aucun achat, aucun abonnement, aucune publicité. Les vies et les étoiles
+se gagnent seulement en jouant. Le site s'installe sur l'écran d'accueil du téléphone (bouton sur l'accueil).
+
 ## Commandes
 
 ```sh

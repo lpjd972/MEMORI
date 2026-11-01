@@ -11,7 +11,7 @@ const retour = () => (Capacitor.isNativePlatform() ? SITE_URL : window.location.
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<{ display_name: string | null; is_premium: boolean } | null>(null);
+  const [profile, setProfile] = useState<{ display_name: string | null } | null>(null);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -36,7 +36,7 @@ export function useAuth() {
   const fetchProfile = async (userId: string) => {
     const { data } = await supabase
       .from("profiles")
-      .select("display_name, is_premium")
+      .select("display_name")
       .eq("id", userId)
       .single();
     if (data) setProfile(data);
