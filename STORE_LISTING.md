@@ -38,7 +38,9 @@ Chaque niveau raconte une histoire de la Bible : Noé et l'arche, Moïse et la m
 • Un verset de la Bible (Louis Segond 1910) à chaque niveau réussi
 • Le Défi de la Parole pour regagner des vies en répondant aux questions
 • Des pauses louange de 30 secondes pour découvrir des chaînes chrétiennes
-• Des niveaux infinis, un classement et la sauvegarde de ta progression (compte facultatif)
+• Toute la famille sur un seul compte : chaque catégorie (Petits, Enfants, Ados & adultes) garde son propre niveau
+• Une question ratée ? Le jeu t'indique le chapitre de la Bible à relire pour trouver la réponse
+• Des niveaux infinis, un classement par âge et la sauvegarde de ta progression (compte facultatif)
 
 🆓 GRATUIT ET SANS PUBLICITÉ
 Aucune publicité. Joue autant que tu veux.
@@ -57,14 +59,14 @@ Aucune publicité. Joue autant que tu veux.
 
 ## Visuels requis (à refaire avec le nouveau nom)
 
-| Élément | Format | Obligatoire |
-|---|---|---|
-| Icône | 512 × 512 px, PNG 32 bits → `public/logo.png` | ✅ |
-| Image de présentation (feature graphic) | 1024 × 500 px | ✅ |
-| Captures d'écran téléphone | min. 2 (idéal 4-8), 9:16 | ✅ |
+Tout est prêt dans `docs/play-store/` (fait le 01/11/2026) :
 
-> Captures conseillées : l'accueil (« Qui joue ? »), un plateau Petits, un plateau Ados & adultes,
-> une question, l'écran du verset, le Défi de la Parole.
+| Élément | Fichier | Format |
+|---|---|---|
+| Icône | `docs/play-store/icone-512.png` | 512 × 512 |
+| Image de présentation | `docs/play-store/banniere-1024x500.png` | 1024 × 500 |
+| Captures d'écran téléphone (8) | `docs/play-store/1-accueil.png` … `8-plateau-adultes.png` | 1080 × 1920 |
+
 
 ## Annonces
 
@@ -90,3 +92,11 @@ L'app **collecte** seulement si la personne crée un compte (facultatif) :
 - Le jeu est pensé pour 3 à 99 ans. Si les moins de 13 ans sont cochés, le programme « Familles » de
   Google s'applique : plus de pub, c'est déjà fait ; il faudra aussi vérifier la pause louange (YouTube)
   et la connexion par compte (facultative). Sinon, cibler « 13 ans et plus » reste le plus simple.
+
+## Dans l'appli Android (à savoir)
+
+- La connexion **Google** n'est proposée que sur le site : Google refuse de se connecter à l'intérieur d'une
+  appli de ce type. Dans l'appli, on crée un compte avec son **e-mail** (le lien de confirmation ouvre le site).
+- Contenu destiné aussi aux enfants : la « pause louange » montre des vidéos YouTube, qui peuvent contenir des
+  publicités de YouTube. Si Google le signale au moment de l'examen (règles « Familles »), on la retirera du mode
+  Petits ou de l'appli.

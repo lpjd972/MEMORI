@@ -1,6 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
+import { Capacitor } from "@capacitor/core";
+
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
+
+// In the Android app the page runs from https://localhost: e-mail links must open the website instead
+const SITE_URL = "https://memory-bible-jd.web.app";
+const retour = () => (Capacitor.isNativePlatform() ? SITE_URL : window.location.origin);
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -42,7 +48,7 @@ export function useAuth() {
       password,
       options: {
         data: { display_name: displayName },
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: retour(),
       },
     });
     return { error };
@@ -56,7 +62,7 @@ export function useAuth() {
   const signInWithGoogle = useCallback(async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: retour() },
     });
     return { error };
   }, []);
