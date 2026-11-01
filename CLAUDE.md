@@ -6,7 +6,7 @@ En ligne : https://memory-bible-jd.web.app (Firebase, projet `memory-bible-jd`) 
 
 ## RÈGLE N°1 — on ne perd jamais rien
 - **À la fin de chaque mission (et après chaque correction) : commit en français, puis push sur GitHub.**
-  Branche de travail actuelle : `claude/memory-bible-redesign-33o8u9` (PR n°6, pas encore fusionnée dans `main`).
+  Branche de référence : `main` (refonte fusionnée le 01/11/2026, PR n°6).
 - Puis mettre à jour la page du wiki (`projets/memory-bible.md`), une ligne en haut de son `journal.md`, et envoyer le wiki.
 - Avant de pousser : récupérer d'abord ce qui est sur GitHub (une autre discussion peut avoir écrit). Jamais de push forcé.
 - Jamais d'identifiant, de mot de passe, de clé secrète ni d'adresse e-mail dans le dépôt (la clé « publishable »
@@ -14,7 +14,7 @@ En ligne : https://memory-bible-jd.web.app (Firebase, projet `memory-bible-jd`) 
 
 ## En début de session
 1. Lire `README.md`, puis `docs/2026-10-29_CHECK-UP-et-REFONTE.md` (tout ce qui a été fait, rubrique par rubrique).
-2. Sur le PC fixe, le jeu vit dans `C:\Users\jeand\Desktop\memory-bible` ; mise en ligne par JD :
+2. Sur le PC fixe, le jeu vit dans `C:\Users\jeand\Desktop\memory-bible` (branche `main`) ; mise en ligne par JD :
    `git pull` puis `npm run deploy` (deux commandes séparées).
 
 ## Règles du projet (décisions de JD)
