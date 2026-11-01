@@ -1,7 +1,14 @@
 import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 import type { ModeAge } from "@/lib/gameData";
 import type { Progression } from "@/lib/progression";
+import { lireJeuxLocaux } from "@/lib/sauvegardeJeux";
+
+/** Progress of a category as stored with the account, with the other games' levels */
+export interface ProgressionCompte extends Progression {
+  jeux: unknown;
+}
 
 /** Progress and scores are stored per age category, so one family account can hold three players. */
 export function useCloudSave(userId: string | undefined) {
@@ -16,6 +23,8 @@ export function useCloudSave(userId: string | undefined) {
           lives: state.lives,
           current_score: state.score,
           levels_completed: state.levelsCompleted,
+          // word search, verses, maze and Défi progress of this category, as held on this device
+          jeux: lireJeuxLocaux(mode) as unknown as Json,
           last_saved_at: new Date().toISOString(),
         },
         { onConflict: "user_id,mode" }
@@ -25,7 +34,7 @@ export function useCloudSave(userId: string | undefined) {
   );
 
   const loadProgress = useCallback(
-    async (mode: ModeAge): Promise<Progression | null> => {
+    async (mode: ModeAge): Promise<ProgressionCompte | null> => {
       if (!userId) return null;
       const { data } = await supabase
         .from("game_progress")
@@ -39,6 +48,7 @@ export function useCloudSave(userId: string | undefined) {
         currentLevel: data.current_level,
         score: data.current_score,
         levelsCompleted: data.levels_completed,
+        jeux: data.jeux ?? {},
       };
     },
     [userId]

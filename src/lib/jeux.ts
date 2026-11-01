@@ -16,12 +16,28 @@ export function lireNiveauJeu(jeu: Jeu, mode: ModeAge): number {
   }
 }
 
-export function ecrireNiveauJeu(jeu: Jeu, mode: ModeAge, niveau: number): void {
+/** Sent when a game level (or the Défi progress) changes, so the account copy is updated at once */
+export const EVENEMENT_JEUX = "memory-bible-jeux";
+
+export function signalerChangementJeux(): void {
+  try {
+    window.dispatchEvent(new Event(EVENEMENT_JEUX));
+  } catch {
+    // pas de fenêtre (tests) : rien à prévenir
+  }
+}
+
+function ecrireNiveauLocal(jeu: Jeu, mode: ModeAge, niveau: number): void {
   try {
     localStorage.setItem(cle(jeu, mode), String(niveau));
   } catch {
     // stockage indisponible : le niveau n'est simplement pas gardé
   }
+}
+
+export function ecrireNiveauJeu(jeu: Jeu, mode: ModeAge, niveau: number): void {
+  ecrireNiveauLocal(jeu, mode, niveau);
+  signalerChangementJeux();
 }
 
 /** Stars needed for a hint, or exchanged for lives (3 stars = 3 hearts) */

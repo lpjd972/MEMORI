@@ -209,3 +209,10 @@ de YouTube : je le déconseille.
     l'histoire, où lire chaque mot) avec le bouton « Passer au niveau 2 → ». Compteur « 3 / 5 mots trouvés » sous la
     liste. Bug corrigé : dans environ 1 grille sur 7, un mot apparaissait deux fois par hasard et l'une des deux
     copies était refusée (« pas un mot de la liste ») ; maintenant le mot compte partout où il est écrit (test ajouté).
+20. **Tout retrouver avec son compte** (demande de JD du 01/11/2026 : niveau des mots mêlés revenu à 1 sur un autre
+    appareil) : les niveaux des Mots mêlés, des Versets à trous et du labyrinthe, et la progression du Défi de la
+    Parole, sont maintenant gardés avec le compte, pour chaque catégorie (colonne `jeux` de `game_progress`,
+    migration `20261101120000_niveaux_des_autres_jeux.sql`). Chaque niveau gagné part tout de suite sur le compte ;
+    sur un autre appareil, à la connexion, le jeu garde le plus avancé des deux (jamais de retour en arrière).
+    Les niveaux gagnés avant cette mise à jour sont sur l'appareil où ils ont été joués : il suffit d'ouvrir le jeu
+    une fois sur cet appareil, connecté, pour qu'ils partent sur le compte. Tests ajoutés (`src/test/sauvegarde.test.ts`).
