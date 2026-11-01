@@ -196,3 +196,8 @@ de YouTube : je le déconseille.
     d'une pause louange YouTube (oubli corrigé : il restait là un chant YouTube). Pour eux, le Bonus = Défi de la
     Parole (questions simples, avec un parent), pause psaume, labyrinthe, lien « La Bible App pour les enfants »,
     Vie de Louange. Toujours le principe : les petits jouent avec un parent.
+18. **Mots mêlés : la consigne bien visible** (retour de JD du 01/11/2026, versets à trous validés) : avant de
+    commencer, la consigne « Touche la première lettre d'un mot, puis sa dernière lettre » est en gros, dans un cadre
+    jaune, avec une démonstration animée (un doigt trouve TERRE). Sous la grille, un bouton rappelle la consigne
+    (« Maintenant, touche la dernière lettre du mot » après la première lettre) et montre l'exemple si on le touche.
+    La vidéo d'explication de JD (lien MEGA) reste à ajouter : le site MEGA est bloqué depuis la session cloud.

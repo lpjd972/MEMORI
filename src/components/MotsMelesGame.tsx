@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import EnteteJeu from "./EnteteJeu";
+import DemoMotsMeles from "./DemoMotsMeles";
 import { MODES, type ModeAge } from "@/lib/gameData";
 import { creerGrille, ligneEntre, motSelectionne, type MotCache } from "@/lib/motsMeles";
 import { ecrireNiveauJeu, lireNiveauJeu, PRIX_INDICE } from "@/lib/jeux";
@@ -40,6 +41,7 @@ const MotsMelesGame = ({ mode, score, onSpendStars, onEarnStars, onClose }: Mots
   const [depart, setDepart] = useState<[number, number] | null>(null);
   const [indices, setIndices] = useState<string[]>([]);
   const [message, setMessage] = useState<Message>(null);
+  const [demo, setDemo] = useState(false);
   const fini = trouves.length === aTrouver.length;
 
   const couleurDe = (l: number, c: number): string | null => {
@@ -107,7 +109,15 @@ const MotsMelesGame = ({ mode, score, onSpendStars, onEarnStars, onClose }: Mots
               Retrouve dans la grille les <strong>{aTrouver.length} mots</strong> de cette histoire.
               {grille.mots.some((m) => m.piege) && " Attention : des mots d'autres histoires s'y cachent aussi !"}
             </p>
-            <p className="text-xs text-muted-foreground mt-2">Touche la première lettre d'un mot, puis la dernière.</p>
+            <div className="mt-4 bg-amber-100 border-2 border-amber-400 rounded-xl p-3 text-center">
+              <p className="text-lg font-extrabold text-slate-900 leading-snug">
+                👆 Touche la <span className="underline">première</span> lettre d'un mot, puis sa{" "}
+                <span className="underline">dernière</span> lettre.
+              </p>
+            </div>
+            <div className="mt-3">
+              <DemoMotsMeles />
+            </div>
             <button onClick={() => setCommence(true)} className="w-full game-gradient text-primary-foreground font-bold py-3 rounded-xl mt-5">
               Commencer
             </button>
@@ -164,6 +174,23 @@ const MotsMelesGame = ({ mode, score, onSpendStars, onEarnStars, onClose }: Mots
                 </span>
               ))}
             </div>
+            {!fini && (
+              <button
+                onClick={() => setDemo((d) => !d)}
+                className={`w-full text-sm font-extrabold px-4 py-3 rounded-xl border-2 ${
+                  depart ? "bg-primary text-primary-foreground border-primary" : "bg-amber-100 text-slate-900 border-amber-400"
+                }`}
+                aria-expanded={demo}
+              >
+                {depart
+                  ? "👉 Maintenant, touche la dernière lettre du mot"
+                  : "👆 Touche la première lettre d'un mot, puis la dernière lettre pour le trouver"}
+                <span className="block text-[11px] font-semibold opacity-80 mt-0.5">
+                  {demo ? "Cacher l'exemple" : "Touche ici pour voir un exemple"}
+                </span>
+              </button>
+            )}
+            {!fini && demo && <DemoMotsMeles />}
             {!fini ? (
               <button
                 onClick={acheterIndice}
