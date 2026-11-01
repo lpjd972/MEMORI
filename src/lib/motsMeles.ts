@@ -153,6 +153,27 @@ export function ligneEntre(a: [number, number], b: [number, number]): [number, n
   return Array.from({ length: long + 1 }, (_, i) => [a[0] + dl * i, a[1] + dc * i] as [number, number]);
 }
 
+/** Letters read along the selected cells */
+export function lettresDe(grille: GrilleMotsMeles, cases: [number, number][]): string {
+  return cases.map(([l, c]) => grille.lettres[l][c]).join("");
+}
+
+/**
+ * The word whose LETTERS match the selection (either direction), wherever it is in the grid:
+ * a word can appear twice by chance, and both copies must count.
+ * Words still to find come first, then traps, then words already found.
+ */
+export function motLu(grille: GrilleMotsMeles, cases: [number, number][], dejaTrouves: string[]): MotCache | undefined {
+  const s = lettresDe(grille, cases);
+  const r = [...s].reverse().join("");
+  const correspond = (m: MotCache) => m.cle === s || m.cle === r;
+  return (
+    grille.mots.find((m) => !m.piege && !dejaTrouves.includes(m.cle) && correspond(m)) ??
+    grille.mots.find((m) => m.piege && correspond(m)) ??
+    grille.mots.find((m) => correspond(m))
+  );
+}
+
 /** The word (from the list or a trap) whose cells match the selection, in either direction */
 export function motSelectionne(grille: GrilleMotsMeles, cases: [number, number][]): MotCache | undefined {
   const cle = cases.map(([l, c]) => `${l},${c}`).join("|");

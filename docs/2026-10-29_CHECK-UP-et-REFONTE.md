@@ -203,3 +203,9 @@ de YouTube : je le déconseille.
     La vidéo d'explication de JD (sa chaîne YouTube, https://youtu.be/VXRIjRRtgmU) s'ouvre dans le jeu avec le
     bouton « ▶️ Voir la vidéo d'explication » (avant de commencer, et sous la grille avec l'exemple). Mots mêlés :
     dès 7 ans seulement, donc pas de YouTube pour les petits. Identifiant de la vidéo : `src/lib/jeux.ts`.
+19. **Mots mêlés : vérifier et passer au niveau suivant** (retour de JD du 01/11/2026) : un bouton « ✅ Vérifier ma
+    grille » reste toujours en bas de l'écran. Avant la fin, il dit combien de mots il reste ; quand tous les mots
+    sont barrés, il devient vert et clignote, puis ouvre la fenêtre « Grille validée ! » (étoiles gagnées, verset de
+    l'histoire, où lire chaque mot) avec le bouton « Passer au niveau 2 → ». Compteur « 3 / 5 mots trouvés » sous la
+    liste. Bug corrigé : dans environ 1 grille sur 7, un mot apparaissait deux fois par hasard et l'une des deux
+    copies était refusée (« pas un mot de la liste ») ; maintenant le mot compte partout où il est écrit (test ajouté).

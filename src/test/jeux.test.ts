@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { HISTOIRES } from "@/lib/bible/histoires";
 import { MOTS_MELES } from "@/lib/bible/motsMeles";
 import { MODES_ORDER } from "@/lib/gameData";
-import { creerGrille, ligneEntre, motSelectionne, normaliser, reglageMotsMeles } from "@/lib/motsMeles";
+import { creerGrille, ligneEntre, motLu, motSelectionne, normaliser, reglageMotsMeles } from "@/lib/motsMeles";
 import { passageAlire } from "@/lib/lienBible";
 
 describe("mots mêlés", () => {
@@ -40,6 +40,33 @@ describe("mots mêlés", () => {
     expect(motSelectionne(g, ligneEntre(debut, fin)!)?.cle).toBe(m.cle);
     expect(motSelectionne(g, ligneEntre(fin, debut)!)?.cle).toBe(m.cle);
     expect(ligneEntre([0, 0], [1, 2])).toBeNull();
+  });
+
+  it("compte un mot partout où il est écrit, même sa copie due au hasard", () => {
+    const dirs = [[0, 1], [1, 0], [1, 1], [-1, 1], [0, -1], [-1, 0], [-1, -1], [1, -1]];
+    for (const mode of ["enfants", "grands"] as const) {
+      for (let niveau = 1; niveau <= 31; niveau++) {
+        const g = creerGrille(niveau, mode);
+        for (const m of g.mots.filter((x) => !x.piege)) {
+          // every place where the word's letters can be read
+          for (let l = 0; l < g.taille; l++) {
+            for (let c = 0; c < g.taille; c++) {
+              for (const [dl, dc] of dirs) {
+                const fin: [number, number] = [l + dl * (m.cle.length - 1), c + dc * (m.cle.length - 1)];
+                if (fin[0] < 0 || fin[1] < 0 || fin[0] >= g.taille || fin[1] >= g.taille) continue;
+                const cases = ligneEntre([l, c], fin)!;
+                if (cases.map(([x, y]) => g.lettres[x][y]).join("") !== m.cle) continue;
+                expect(motLu(g, cases, [])?.cle, `${mode} ${niveau} ${m.cle}`).toBe(m.cle);
+              }
+            }
+          }
+        }
+        // once every word is found, the last tap on a word says « déjà trouvé » (not « pas dans la liste »)
+        const tous = g.mots.filter((x) => !x.piege).map((x) => x.cle);
+        const m = g.mots[0];
+        expect(motLu(g, m.cases, tous)?.cle).toBe(m.cle);
+      }
+    }
   });
 });
 
