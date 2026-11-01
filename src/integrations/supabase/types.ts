@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           current_level: number
           current_score: number
+          jeux: Json
           last_saved_at: string
           levels_completed: number
           lives: number
@@ -27,6 +28,7 @@ export type Database = {
         Insert: {
           current_level?: number
           current_score?: number
+          jeux?: Json
           last_saved_at?: string
           levels_completed?: number
           lives?: number
@@ -36,6 +38,7 @@ export type Database = {
         Update: {
           current_level?: number
           current_score?: number
+          jeux?: Json
           last_saved_at?: string
           levels_completed?: number
           lives?: number

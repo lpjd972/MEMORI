@@ -19,6 +19,8 @@ import { useCloudSave } from "@/hooks/useCloudSave";
 import { MODES_ORDER, getLevelConfig, pickQuestion, type ModeAge, type QuizQuestion } from "@/lib/gameData";
 import { LOUANGES } from "@/lib/louanges";
 import { ecrireProgressionLocale, lireProgressionLocale, type Progression } from "@/lib/progression";
+import { fusionnerJeux } from "@/lib/sauvegardeJeux";
+import { EVENEMENT_JEUX } from "@/lib/jeux";
 
 const MODE_KEY = "memory-bible-mode";
 /** A worship break is offered every N completed levels (when songs are configured) */
@@ -107,6 +109,8 @@ const Index = () => {
       const token = ++loadTokenRef.current;
       const saved = user ? await loadProgress(m) : lireProgressionLocale(m);
       if (token !== loadTokenRef.current) return;
+      // other games' levels: keep the most advanced of this device and the account
+      if (saved && "jeux" in saved) fusionnerJeux(m, saved.jeux);
       loadedModeRef.current = m;
       replaceProgress(saved);
       refreshLevels();
@@ -142,6 +146,19 @@ const Index = () => {
       persist(mode, gameState);
     }
   }, [gameState, phase, mode, persist]);
+
+  // A level won in Mots mêlés, Versets à trous, the maze or the Défi is sent to the account at once
+  const gameStateRef = useRef(gameState);
+  gameStateRef.current = gameState;
+  useEffect(() => {
+    const envoyer = () => {
+      if (user && loadedModeRef.current === mode && gameStateRef.current.phase !== "gameOver") {
+        saveProgress(gameStateRef.current, mode);
+      }
+    };
+    window.addEventListener(EVENEMENT_JEUX, envoyer);
+    return () => window.removeEventListener(EVENEMENT_JEUX, envoyer);
+  }, [user, mode, saveProgress]);
 
   const handleRestart = useCallback(() => {
     restartGame();
