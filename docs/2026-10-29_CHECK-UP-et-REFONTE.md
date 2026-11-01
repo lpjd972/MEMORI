@@ -200,4 +200,6 @@ de YouTube : je le déconseille.
     commencer, la consigne « Touche la première lettre d'un mot, puis sa dernière lettre » est en gros, dans un cadre
     jaune, avec une démonstration animée (un doigt trouve TERRE). Sous la grille, un bouton rappelle la consigne
     (« Maintenant, touche la dernière lettre du mot » après la première lettre) et montre l'exemple si on le touche.
-    La vidéo d'explication de JD (lien MEGA) reste à ajouter : le site MEGA est bloqué depuis la session cloud.
+    La vidéo d'explication de JD (sa chaîne YouTube, https://youtu.be/VXRIjRRtgmU) s'ouvre dans le jeu avec le
+    bouton « ▶️ Voir la vidéo d'explication » (avant de commencer, et sous la grille avec l'exemple). Mots mêlés :
+    dès 7 ans seulement, donc pas de YouTube pour les petits. Identifiant de la vidéo : `src/lib/jeux.ts`.

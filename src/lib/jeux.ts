@@ -26,3 +26,6 @@ export function ecrireNiveauJeu(jeu: Jeu, mode: ModeAge, niveau: number): void {
 
 /** Stars needed for a hint, or exchanged for lives (3 stars = 3 hearts) */
 export const PRIX_INDICE = 3;
+
+/** JD's own explanation video for the word search (his YouTube channel), shown inside the game */
+export const VIDEO_MOTS_MELES = "VXRIjRRtgmU";

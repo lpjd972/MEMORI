@@ -2,9 +2,10 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import EnteteJeu from "./EnteteJeu";
 import DemoMotsMeles from "./DemoMotsMeles";
+import VideoTuto from "./VideoTuto";
 import { MODES, type ModeAge } from "@/lib/gameData";
 import { creerGrille, ligneEntre, motSelectionne, type MotCache } from "@/lib/motsMeles";
-import { ecrireNiveauJeu, lireNiveauJeu, PRIX_INDICE } from "@/lib/jeux";
+import { ecrireNiveauJeu, lireNiveauJeu, PRIX_INDICE, VIDEO_MOTS_MELES } from "@/lib/jeux";
 import { passageAlire } from "@/lib/lienBible";
 
 interface MotsMelesGameProps {
@@ -118,6 +119,9 @@ const MotsMelesGame = ({ mode, score, onSpendStars, onEarnStars, onClose }: Mots
             <div className="mt-3">
               <DemoMotsMeles />
             </div>
+            <div className="mt-3">
+              <VideoTuto youtubeId={VIDEO_MOTS_MELES} />
+            </div>
             <button onClick={() => setCommence(true)} className="w-full game-gradient text-primary-foreground font-bold py-3 rounded-xl mt-5">
               Commencer
             </button>
@@ -190,7 +194,12 @@ const MotsMelesGame = ({ mode, score, onSpendStars, onEarnStars, onClose }: Mots
                 </span>
               </button>
             )}
-            {!fini && demo && <DemoMotsMeles />}
+            {!fini && demo && (
+              <>
+                <DemoMotsMeles />
+                <VideoTuto youtubeId={VIDEO_MOTS_MELES} />
+              </>
+            )}
             {!fini ? (
               <button
                 onClick={acheterIndice}
