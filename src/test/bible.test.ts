@@ -151,6 +151,14 @@ describe("pause louange", () => {
     for (const id of ids) expect(id, id).toMatch(/^[A-Za-z0-9_-]{11}$/);
     expect(new Set(ids).size).toBe(ids.length);
   });
+
+  it("chaque extrait commence sur le refrain relevé par JD (un temps en secondes, sous 10 minutes)", () => {
+    for (const l of LOUANGES) {
+      expect(Number.isInteger(l.debut), l.youtubeId).toBe(true);
+      expect(l.debut!, l.youtubeId).toBeGreaterThanOrEqual(0);
+      expect(l.debut!, l.youtubeId).toBeLessThan(600);
+    }
+  });
 });
 
 describe("liens vers la Bible", () => {

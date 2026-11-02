@@ -221,3 +221,8 @@ de YouTube : je le déconseille.
     le trait, et un bouton « Effacer le trait et recommencer » remet au départ. À l'arrivée, le trait devient vert et
     l'enfant est à côté de la croix. Les flèches du clavier marchent encore sur ordinateur. Le labyrinthe ne bouge
     plus sous le doigt (bug trouvé au test : la page se décalait quand le trait commençait). Tests ajoutés.
+22. **Pause louange : on tombe directement sur le refrain** (idée d'un membre de la famille de JD, temps relevés par
+    JD le 02/11/2026) : chacun des 25 chants démarre au refrain (ou au couplet choisi) au lieu de l'introduction, et
+    s'arrête 30 secondes plus tard ; le lien « écouter la suite » reprend au même endroit. Temps dans
+    `src/lib/louanges.ts` (champ `debut`, en secondes, avec le temps mm:ss en commentaire). Pour un nouveau chant :
+    son lien et le temps du refrain.

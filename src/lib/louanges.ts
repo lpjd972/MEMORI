@@ -18,33 +18,34 @@ export interface Louange {
   debut?: number;
 }
 
-// Première liste de JD (30/10/2026), 25 chants.
+// Première liste de JD (30/10/2026), 25 chants. Début de chaque extrait sur le refrain (ou un couplet) :
+// temps relevés par JD le 02/11/2026 (idée d'un membre de sa famille : « tomber directement dans le champ »).
 export const LOUANGES: Louange[] = [
-  { youtubeId: "DxkfmLpuloI" },
-  { youtubeId: "LT3HwQAjgKs" },
-  { youtubeId: "JLT3VKp01Xc" },
-  { youtubeId: "_ozQfbgcbBg" },
-  { youtubeId: "JL9ikMmRNW8" },
-  { youtubeId: "KXbKHIpmhXY" },
-  { youtubeId: "i6YtHZEV0GU" },
-  { youtubeId: "kNTw0-jpUnQ" },
-  { youtubeId: "1ieckehNEO8" },
-  { youtubeId: "dn9pdpSvBm0" },
-  { youtubeId: "iRgevquZQfk" },
-  { youtubeId: "aEboHH22kSA" },
-  { youtubeId: "Xf8JMhOwE2A" },
-  { youtubeId: "2tAFUL0HfrQ" },
-  { youtubeId: "vKyurZv9vE8" },
-  { youtubeId: "SHI5fqr3tYg" },
-  { youtubeId: "Lo6EE-ymUUU" },
-  { youtubeId: "HX2LogUtToI" },
-  { youtubeId: "gYNCeKY5Pmw" },
-  { youtubeId: "KhQMHEUjFAA" },
-  { youtubeId: "pR2yEnMpYmE" },
-  { youtubeId: "fHsiA74lgyg" },
-  { youtubeId: "G01_AsaRIxo" },
-  { youtubeId: "1zh1wePLsHo" },
-  { youtubeId: "OjiWQVKX7WI" },
+  { youtubeId: "DxkfmLpuloI", debut: 12 }, // 1. refrain à 0:12
+  { youtubeId: "LT3HwQAjgKs", debut: 61 }, // 2. refrain à 1:01
+  { youtubeId: "JLT3VKp01Xc", debut: 132 }, // 3. refrain à 2:12
+  { youtubeId: "_ozQfbgcbBg", debut: 95 }, // 4. refrain à 1:35
+  { youtubeId: "JL9ikMmRNW8", debut: 45 }, // 5. refrain à 0:45
+  { youtubeId: "KXbKHIpmhXY", debut: 17 }, // 6. refrain à 0:17
+  { youtubeId: "i6YtHZEV0GU", debut: 81 }, // 7. refrain à 1:21
+  { youtubeId: "kNTw0-jpUnQ", debut: 157 }, // 8. refrain à 2:37
+  { youtubeId: "1ieckehNEO8", debut: 32 }, // 9. refrain à 0:32
+  { youtubeId: "dn9pdpSvBm0", debut: 106 }, // 10. refrain à 1:46
+  { youtubeId: "iRgevquZQfk", debut: 11 }, // 11. refrain à 0:11
+  { youtubeId: "aEboHH22kSA", debut: 12 }, // 12. refrain à 0:12
+  { youtubeId: "Xf8JMhOwE2A", debut: 17 }, // 13. refrain à 0:17
+  { youtubeId: "2tAFUL0HfrQ", debut: 25 }, // 14. refrain à 0:25
+  { youtubeId: "vKyurZv9vE8", debut: 53 }, // 15. refrain à 0:53
+  { youtubeId: "SHI5fqr3tYg", debut: 29 }, // 16. refrain à 0:29
+  { youtubeId: "Lo6EE-ymUUU", debut: 99 }, // 17. refrain à 1:39
+  { youtubeId: "HX2LogUtToI", debut: 42 }, // 18. refrain à 0:42
+  { youtubeId: "gYNCeKY5Pmw", debut: 12 }, // 19. refrain à 0:12
+  { youtubeId: "KhQMHEUjFAA", debut: 15 }, // 20. refrain à 0:15
+  { youtubeId: "pR2yEnMpYmE", debut: 42 }, // 21. refrain à 0:42
+  { youtubeId: "fHsiA74lgyg", debut: 29 }, // 22. refrain à 0:29
+  { youtubeId: "G01_AsaRIxo", debut: 2 }, // 23. refrain à 0:02
+  { youtubeId: "1zh1wePLsHo", debut: 34 }, // 24. refrain à 0:34
+  { youtubeId: "OjiWQVKX7WI", debut: 3 }, // 25. refrain à 0:03
 ];
 
 export const DUREE_EXTRAIT = 30;
