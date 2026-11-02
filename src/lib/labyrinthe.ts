@@ -52,3 +52,40 @@ export function avancer(cases: Case[][], [l, c]: [number, number], sens: Sens): 
   if (sens === "gauche") return [l, c - 1];
   return [l, c + 1];
 }
+
+export type Position = [number, number];
+const memeCase = (a: Position, b: Position) => a[0] === b[0] && a[1] === b[1];
+
+/**
+ * The child drags a finger through the maze: the trail follows the finger one cell at a time, only
+ * where there is no wall. Going back over the trail rubs it out. Returns the new trail (start → head).
+ */
+export function suivreDoigt(cases: Case[][], chemin: Position[], cible: Position): Position[] {
+  let trace = chemin;
+  const taille = cases.length;
+  if (cible[0] < 0 || cible[1] < 0 || cible[0] >= taille || cible[1] >= taille) return trace;
+  for (let pas = 0; pas < taille * taille; pas++) {
+    const tete = trace[trace.length - 1];
+    if (memeCase(tete, cible)) break;
+    // the finger is back on the trail: the trail is shortened to that cell
+    const deja = trace.findIndex((p) => memeCase(p, cible));
+    if (deja >= 0) return trace.slice(0, deja + 1);
+    const dl = Math.sign(cible[0] - tete[0]);
+    const dc = Math.sign(cible[1] - tete[1]);
+    const vertical: Sens | null = dl < 0 ? "haut" : dl > 0 ? "bas" : null;
+    const horizontal: Sens | null = dc < 0 ? "gauche" : dc > 0 ? "droite" : null;
+    const essais = (
+      Math.abs(cible[0] - tete[0]) >= Math.abs(cible[1] - tete[1]) ? [vertical, horizontal] : [horizontal, vertical]
+    ).filter((s): s is Sens => s !== null);
+    let bouge = false;
+    for (const sens of essais) {
+      const suivante = avancer(cases, tete, sens);
+      if (memeCase(suivante, tete)) continue;
+      trace = trace.length > 1 && memeCase(suivante, trace[trace.length - 2]) ? trace.slice(0, -1) : [...trace, suivante];
+      bouge = true;
+      break;
+    }
+    if (!bouge) break; // a wall is in the way: the trail waits for the finger
+  }
+  return trace;
+}

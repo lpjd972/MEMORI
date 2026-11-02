@@ -72,7 +72,7 @@ describe("mots mêlés", () => {
 
 import { VERSETS, decouper } from "@/lib/bible/versets";
 import { creerPuzzle } from "@/lib/versetsATrous";
-import { creerLabyrinthe, avancer } from "@/lib/labyrinthe";
+import { creerLabyrinthe, avancer, suivreDoigt, type Position } from "@/lib/labyrinthe";
 
 describe("versets à trous", () => {
   it("les versets repris des histoires ont exactement le même texte (Louis Segond 1910)", () => {
@@ -119,6 +119,56 @@ describe("labyrinthe", () => {
       }
       expect(vu.has(`${taille - 1},${taille - 1}`)).toBe(true);
       expect(vu.size).toBe(taille * taille);
+    }
+  });
+});
+
+
+describe("labyrinthe tracé au doigt", () => {
+  /** shortest way from the start to Jesus */
+  const solution = (cases: ReturnType<typeof creerLabyrinthe>): Position[] => {
+    const n = cases.length;
+    const avant = new Map<string, Position | null>([["0,0", null]]);
+    const file: Position[] = [[0, 0]];
+    while (file.length) {
+      const p = file.shift()!;
+      for (const s of ["haut", "bas", "gauche", "droite"] as const) {
+        const q = avancer(cases, p, s);
+        if (!avant.has(q.join(","))) {
+          avant.set(q.join(","), p);
+          file.push(q);
+        }
+      }
+    }
+    const chemin: Position[] = [];
+    for (let p: Position | null = [n - 1, n - 1]; p; p = avant.get(p.join(",")) ?? null) chemin.unshift(p);
+    return chemin;
+  };
+
+  it("le trait suit le doigt le long du bon chemin jusqu'à Jésus", () => {
+    for (let taille = 4; taille <= 8; taille++) {
+      const cases = creerLabyrinthe(taille);
+      let trace: Position[] = [[0, 0]];
+      for (const p of solution(cases)) trace = suivreDoigt(cases, trace, p);
+      expect(trace[trace.length - 1]).toEqual([taille - 1, taille - 1]);
+      expect(trace).toEqual(solution(cases));
+    }
+  });
+
+  it("un mur arrête le trait, et revenir en arrière l'efface", () => {
+    const cases = creerLabyrinthe(6);
+    const bon = solution(cases);
+    let trace: Position[] = [[0, 0]];
+    for (const p of bon.slice(1, 4)) trace = suivreDoigt(cases, trace, p);
+    expect(trace).toEqual(bon.slice(0, 4));
+    // back to the second cell: the end of the line is rubbed out
+    expect(suivreDoigt(cases, trace, bon[1])).toEqual(bon.slice(0, 2));
+    // every step of the trail goes through an opening, never through a wall
+    const libre = suivreDoigt(cases, [[0, 0]], [5, 5]);
+    for (let i = 1; i < libre.length; i++) {
+      const [a, b] = [libre[i - 1], libre[i]];
+      const sens = b[0] < a[0] ? "haut" : b[0] > a[0] ? "bas" : b[1] < a[1] ? "gauche" : "droite";
+      expect(avancer(cases, a, sens)).toEqual(b);
     }
   });
 });

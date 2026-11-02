@@ -216,3 +216,8 @@ de YouTube : je le déconseille.
     sur un autre appareil, à la connexion, le jeu garde le plus avancé des deux (jamais de retour en arrière).
     Les niveaux gagnés avant cette mise à jour sont sur l'appareil où ils ont été joués : il suffit d'ouvrir le jeu
     une fois sur cet appareil, connecté, pour qu'ils partent sur le compte. Tests ajoutés (`src/test/sauvegarde.test.ts`).
+21. **Labyrinthe tracé au doigt** (demande de JD du 02/11/2026) : plus de flèches. L'enfant pose son doigt sur 🧒 et
+    trace le chemin ; un trait jaune suit son doigt dans les allées (jamais à travers un mur), revenir en arrière efface
+    le trait, et un bouton « Effacer le trait et recommencer » remet au départ. À l'arrivée, le trait devient vert et
+    l'enfant est à côté de la croix. Les flèches du clavier marchent encore sur ordinateur. Le labyrinthe ne bouge
+    plus sous le doigt (bug trouvé au test : la page se décalait quand le trait commençait). Tests ajoutés.
