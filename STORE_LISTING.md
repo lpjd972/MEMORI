@@ -31,7 +31,7 @@ Chaque niveau raconte une histoire de la Bible : Noé et l'arche, Moïse et la m
 👨‍👩‍👧 POUR TOUS LES ÂGES
 • Petits (3-6 ans) : grandes images, petits plateaux, questions avec images, à jouer avec un parent
 • Enfants (7-12 ans) : images et mots, questions sur les histoires
-• Ados & adultes : des mots seulement, des plateaux plus grands et des questions plus pointues
+• Ados & adultes : surtout des mots, quelques paires image ↔ mot à relier, des plateaux plus grands et des questions plus pointues
 
 🎮 TROIS JEUX
 • Memory : retrouve les paires, puis réponds à la question pour passer au niveau suivant

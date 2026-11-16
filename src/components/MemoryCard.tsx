@@ -4,6 +4,8 @@ import type { ModeAge } from "@/lib/gameData";
 interface MemoryCardProps {
   emoji: string;
   mot: string;
+  /** Ados & adultes « image ↔ mot » pair: this card shows only the picture, or only the word */
+  affichage?: "image" | "mot";
   mode: ModeAge;
   columns: number;
   isFlipped: boolean;
@@ -13,7 +15,7 @@ interface MemoryCardProps {
 }
 
 /** Petits : grande image + mot · Enfants : image + mot · Ados & adultes : le mot seul */
-const MemoryCard = ({ emoji, mot, mode, columns, isFlipped, isMatched, onClick, disabled }: MemoryCardProps) => {
+const MemoryCard = ({ emoji, mot, affichage, mode, columns, isFlipped, isMatched, onClick, disabled }: MemoryCardProps) => {
   const dense = columns >= 5;
   const emojiSize = mode === "petits" ? "text-4xl sm:text-5xl" : dense ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl";
   const wordSize =
@@ -49,10 +51,20 @@ const MemoryCard = ({ emoji, mot, mode, columns, isFlipped, isMatched, onClick, 
             isMatched ? "bg-game-card-matched text-secondary-foreground" : "bg-card text-foreground"
           }`}
         >
-          {mode !== "grands" && <span className={`${emojiSize} leading-none select-none`}>{emoji}</span>}
-          <span className={`${wordSize} font-extrabold leading-tight text-center break-words hyphens-auto select-none`}>
-            {mot}
-          </span>
+          {affichage === "image" && !isMatched ? (
+            // the picture alone, big: the player links it to the card with its word
+            <span className={`${dense ? "text-3xl sm:text-4xl" : "text-4xl sm:text-5xl"} leading-none select-none`}>{emoji}</span>
+          ) : (
+            <>
+              {/* once an image ↔ word pair is found, both cards show the picture and the word */}
+              {(mode !== "grands" || (affichage && isMatched)) && (
+                <span className={`${emojiSize} leading-none select-none`}>{emoji}</span>
+              )}
+              <span className={`${wordSize} font-extrabold leading-tight text-center break-words hyphens-auto select-none`}>
+                {mot}
+              </span>
+            </>
+          )}
         </div>
       </div>
     </motion.button>

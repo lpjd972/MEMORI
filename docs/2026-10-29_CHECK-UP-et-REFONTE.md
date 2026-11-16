@@ -226,3 +226,9 @@ de YouTube : je le déconseille.
     s'arrête 30 secondes plus tard ; le lien « écouter la suite » reprend au même endroit. Temps dans
     `src/lib/louanges.ts` (champ `debut`, en secondes, avec le temps mm:ss en commentaire). Pour un nouveau chant :
     son lien et le temps du refrain.
+23. **Memory des adultes : quelques paires image ↔ mot** (idée de JD du 16/11/2026) : en Ados & adultes, environ une
+    paire sur trois devient « image ↔ mot » : une carte montre le dessin (par exemple l'arche), l'autre le mot
+    (« Arche »), et il faut les relier. 4 paires → 1, 5 paires (10 cartes) → 2, 8 → 3, 11 → 4, 14-15 → 5 : cela
+    grandit avec le plateau mais reste léger. Ces paires viennent d'abord de l'histoire du niveau, avec un dessin
+    unique sur le plateau. Une fois trouvées, les deux cartes montrent le dessin et le mot. Consigne sous le titre :
+    « 🖼️ Relie aussi chaque image à son mot ». Enfants et Petits ne changent pas. Tests ajoutés.

@@ -7,6 +7,7 @@ import {
   MODES_ORDER,
   createCards,
   getLevelConfig,
+  pairesImageMot,
   niveauxDefi,
   pickBonusQuestions,
   pickQuestion,
@@ -84,6 +85,34 @@ describe("moteur du jeu", () => {
         const expectedOwn = Math.min(pairs, own.length);
         expect([...keys.keys()].filter((k) => own.includes(k)).length).toBe(expectedOwn);
       }
+    }
+  });
+
+  it("adultes : quelques paires image ↔ mot (une sur trois environ), qui grandissent avec le plateau", () => {
+    expect(pairesImageMot(4, "grands")).toBe(1);
+    expect(pairesImageMot(5, "grands")).toBe(2); // 10 cartes → 2 paires image ↔ mot (exemple de JD)
+    expect(pairesImageMot(15, "grands")).toBe(5);
+    expect(pairesImageMot(12, "enfants")).toBe(0);
+    for (let level = 1; level <= 62; level++) {
+      const cards = createCards(level, "grands");
+      const { pairs } = getLevelConfig(level, "grands");
+      const images = cards.filter((c) => c.affichage === "image");
+      expect(images.length, `niveau ${level}`).toBe(pairesImageMot(pairs, "grands"));
+      for (const img of images) {
+        // its partner shows the word, and no other card on the board has the same picture
+        const partenaire = cards.find((c) => c.key === img.key && c.id !== img.id)!;
+        expect(partenaire.affichage).toBe("mot");
+        expect(cards.filter((c) => c.emoji === img.emoji).length).toBe(2);
+      }
+      // the picture pairs come from the level's own story first
+      const own = getLevelConfig(level, "grands").histoire.cartes.map((c) => c.mot);
+      const ownUsable = cards.filter(
+        (c) => own.includes(c.key) && cards.filter((x) => x.emoji === c.emoji).length === 2
+      ).length / 2;
+      if (ownUsable >= images.length) expect(images.every((c) => own.includes(c.key)), `niveau ${level}`).toBe(true);
+    }
+    for (const mode of ["petits", "enfants"] as const) {
+      expect(createCards(10, mode).some((c) => c.affichage)).toBe(false);
     }
   });
 
