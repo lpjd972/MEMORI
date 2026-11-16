@@ -84,6 +84,9 @@ const MemoryBoard = ({ level, mode, onComplete, onError }: MemoryBoardProps) => 
       <p className="text-xs text-muted-foreground mb-4 px-1">
         📖 {config.histoire.reference}
         {config.tour > 1 && <span className="ml-2 font-bold text-accent">· Tour {config.tour}</span>}
+        {cards.some((c) => c.affichage === "image") && (
+          <span className="block mt-0.5">🖼️ Relie aussi chaque image à son mot</span>
+        )}
       </p>
       <div
         className="grid gap-2 sm:gap-3"
@@ -94,6 +97,7 @@ const MemoryBoard = ({ level, mode, onComplete, onError }: MemoryBoardProps) => 
             key={card.id}
             emoji={card.emoji}
             mot={card.mot}
+            affichage={card.affichage}
             mode={mode}
             columns={config.columns}
             isFlipped={card.isFlipped}

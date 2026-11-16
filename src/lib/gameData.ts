@@ -7,7 +7,7 @@ export type ModeAge = "petits" | "enfants" | "grands";
 export const MODES: Record<ModeAge, { emoji: string; label: string; ages: string; description: string }> = {
   petits: { emoji: "🐑", label: "Petits", ages: "3 – 6 ans", description: "Grandes images, petits plateaux, questions avec images" },
   enfants: { emoji: "🧒", label: "Enfants", ages: "7 – 12 ans", description: "Images et mots, questions sur les histoires" },
-  grands: { emoji: "📖", label: "Ados & adultes", ages: "13 – 99 ans", description: "Des mots seulement, plateaux plus grands, questions pointues" },
+  grands: { emoji: "📖", label: "Ados & adultes", ages: "13 – 99 ans", description: "Surtout des mots, quelques paires image ↔ mot, questions pointues" },
 };
 
 export const MODES_ORDER: ModeAge[] = ["petits", "enfants", "grands"];
@@ -18,6 +18,11 @@ export interface GameCard {
   key: string;
   emoji: string;
   mot: string;
+  /**
+   * Ados & adultes: most cards show the word only; a few pairs are « image ↔ mot »: one card shows the
+   * picture, the other the word (idea of JD, 16/11/2026). Other categories always show both.
+   */
+  affichage?: "image" | "mot";
   isFlipped: boolean;
   isMatched: boolean;
 }
@@ -82,16 +87,40 @@ export function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
+/**
+ * Ados & adultes: number of « image ↔ mot » pairs, about one pair in three, so the board stays mostly
+ * words: 4 pairs → 1, 5 pairs (10 cards) → 2, 8 → 3, 11 → 4, 14-15 → 5. Other categories: none.
+ */
+export function pairesImageMot(pairs: number, mode: ModeAge): number {
+  return mode === "grands" ? Math.max(1, Math.floor((pairs + 1) / 3)) : 0;
+}
+
 /** Les cartes du niveau : d'abord celles de l'histoire, puis, si le plateau est plus grand, des cartes d'autres histoires. */
 export function createCards(level: number, mode: ModeAge): GameCard[] {
   const { pairs, histoire } = getLevelConfig(level, mode);
   const own = shuffleArray(histoire.cartes);
   const others = shuffleArray(HISTOIRES.filter((h) => h.id !== histoire.id).flatMap((h) => h.cartes));
   const chosen = [...own, ...others].slice(0, pairs);
+  // image pairs: taken first from the level's own story, and only with a picture no other card on the board uses
+  const emojis = chosen.map((c) => c.emoji);
+  const imageMot = new Set(
+    chosen
+      .map((c, i) => i)
+      .filter((i) => emojis.filter((e) => e === emojis[i]).length === 1)
+      .slice(0, pairesImageMot(pairs, mode))
+  );
   const cards: GameCard[] = [];
   chosen.forEach((carte, index) => {
     for (let k = 0; k < 2; k++) {
-      cards.push({ id: index * 2 + k, key: carte.mot, emoji: carte.emoji, mot: carte.mot, isFlipped: false, isMatched: false });
+      cards.push({
+        id: index * 2 + k,
+        key: carte.mot,
+        emoji: carte.emoji,
+        mot: carte.mot,
+        ...(imageMot.has(index) ? { affichage: k === 0 ? ("image" as const) : ("mot" as const) } : {}),
+        isFlipped: false,
+        isMatched: false,
+      });
     }
   });
   return shuffleArray(cards);
